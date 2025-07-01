@@ -1,0 +1,72 @@
+:root {
+  --color-red: #f75354;
+  --color-green: #51d567;
+  --color-blue: #619cec;
+  --color-cyan: #31c8dd;
+  --color-magenta: #cb79e7;
+  --color-pink: #fe60e8;
+  --color-yellow: #fcd518;
+  --color-orange: #f78153;
+
+  --bubble-size: 15vw;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  background-color: #dceffff4;
+  padding: 20px;
+}
+
+.item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.icon {
+    width: 60px;
+    height: 60px;
+    fill: white;
+}
+
+.arrow {
+    width: 60px;
+    height: 60px;
+    fill: rgb(190, 190, 190);
+}
+
+.bubble {
+    width: var(--bubble-size);
+    height: var(--bubble-size);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bubble-red {
+    background-color: var(--color-red);
+}
+
+.bubble-green {
+    background-color: var(--color-green);
+}
+
+.bubble-cyan {
+    background-color: var(--color-cyan);
+}
+
+.bubble-magenta {
+    background-color: var(--color-magenta);
+}
+
+.label {
+    font-size: 30px;
+    color: #616161;
+    margin-top: 10px;
+    text-transform: capitalize;
+}

@@ -1,0 +1,155 @@
+:root {
+  --color-red: #f75354;
+  --color-green: #51d567;
+  --color-blue: #619cec;
+  --color-cyan: #31c8dd;
+  --color-magenta: #cb79e7;
+  --color-pink: #fe60e8;
+  --color-yellow: #fcd518;
+  --color-orange: #f78153;
+
+  --item-width: 20vw;
+  --item-height: 90vh;
+  --item-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  --item-bg: white;
+
+  --contact-height: 40px;
+  --contact-color: white;
+
+  --container-bg: #dceffff4;
+
+  --img-width: 16vw;
+  --img-height: 16vw;
+
+  --name-color: #333;
+  --job-color: #7b7b7b;
+}
+
+.container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: var(--container-bg);
+  flex-direction: row;
+}
+
+.item {
+  width: var(--item-width);
+  height: var(--item-height);
+  box-shadow: var(--item-shadow);
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  font-size: 1.5em;
+  background-color: var(--item-bg);
+  flex-direction: column;
+}
+
+.img {
+  width: var(--img-width);
+  height: var(--img-height);
+  box-shadow: var(--item-shadow);
+}
+
+.name {
+  font-size: 24px;
+  margin-top: 10px;
+  color: var(--name-color);
+  text-transform: uppercase;
+}
+
+.job {
+  font-size: 15px;
+  margin-top: 5px;
+  color: var(--job-color);
+  text-transform: capitalize;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--img-width);
+}
+
+.info-item {
+  border-bottom: 1px dashed rgb(163, 163, 163);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: var(--img-width);
+  padding: 5px;
+}
+
+.info-start {
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+
+  gap: 2px;
+}
+
+.info-text {
+  font-size: 14px;
+  color: var(--name-color);
+  text-transform: uppercase;
+}
+
+.contact {
+  height: var(--contact-height);
+  width: var(--img-width);
+  background-color: var(--contact-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  padding: 20px;
+  font-size: 14px;
+}
+
+.contact-label {
+  color: var(--contact-color);
+  text-transform: uppercase;
+}
+
+.contact-value {
+  color: var(--contact-color);
+}
+
+.contact-red {
+  background-color: var(--color-red);
+}
+
+.contact-green {
+  background-color: var(--color-green);
+}
+
+.contact-blue {
+  background-color: var(--color-blue);
+}
+.contact-cyan {
+  background-color: var(--color-cyan);
+}
+
+.contact-magenta {
+  background-color: var(--color-magenta);
+}
+
+.contact-pink {
+  background-color: var(--color-pink);
+}
+
+.contact-yellow {
+  background-color: var(--color-yellow);
+}
+
+.contact-orange {
+  background-color: var(--color-orange);
+}
+
+.email-icon {
+  display: inline-block;
+}

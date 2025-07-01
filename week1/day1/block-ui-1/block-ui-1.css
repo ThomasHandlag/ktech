@@ -1,0 +1,241 @@
+:root {
+  --container-width: 540px;
+  --font-family: "Roboto", sans-serif;
+  --font-size: 13px;
+  --font-weight-bold: 700;
+  --color-white: #ffffff;
+  --color-background: #ecf0f1;
+  --spacing: 16px;
+  --block-height: 54px;
+  --label-width: 160px;
+  --spacing-bottom: 16px;
+  --container-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  --bandwidth-primary: #920000;
+  --bandwidth-secondary: #c93126;
+  --bandwidth-text: "Bandwidth";
+  --bandwidth-percentage: 30%;
+  --bandwidth-percentage-text: "30%";
+
+  --storage-primary-color: #2db8cd;
+  --storage-secondary-color: #31c8dd;
+  --storage-text: "Storage";
+  --storage-percentage: 50%;
+  --storage-percentage-text: "50%";
+
+  --user-primary-color: #4ac25e;
+  --user-secondary-color: #51d567;
+  --user-text: "Users";
+  --user-percentage: 70%;
+  --user-percentage-text: "70%";
+
+
+  --visitor-primary-color: #e9c318;
+  --visitor-secondary-color: #fcd518;
+  --visitor-text: "Visitors";
+  --visitor-percentage: 30%;
+  --visitor-percentage-text: "30%";
+
+  --email-primary-color: #bb70d5;
+  --email-secondary-color: #cb79e7;
+  --email-text: "Emails";
+  --email-percentage: 45%;
+  --email-percentage-text: "45%";
+
+  --basic-primary-color: #eb59d6;
+  --basic-secondary-color: #fe60e8;
+  --basic-text: "Basic";
+  --basic-percentage: 60%;
+  --basic-percentage-text: "60%";
+
+  --other-primary-color: #5890da;
+  --other-secondary-color: #619cec;
+  --other-text: "Others";
+  --other-percentage: 37%;
+  --other-percentage-text: "37%";
+}
+
+.container {
+  width: var(--container-width);
+  margin: 0 auto;
+}
+
+.row {
+  display: flex;
+  margin-bottom: var(--spacing-bottom);
+  height: var(--block-height);
+}
+
+.left-column {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: var(--label-width);
+  height: 100%;
+}
+
+.left-column > span {
+  margin-right: var(--spacing);
+  color: var(--color-white);
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+}
+
+.right-column {
+  flex: 1;
+  background-color: var(--color-background);
+}
+
+.right-column-percent {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.right-column-percent > span {
+  margin-left: var(--spacing);
+  color: var(--color-white);
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  font-weight: var(--font-weight-bold);
+}
+
+.bandwidth-color-primary {
+  background-color: var(--bandwidth-primary);
+}
+
+.bandwidth-color-secondary {
+  background-color: var(--bandwidth-secondary);
+}
+
+.bandwidth-text::before {
+  content: var(--bandwidth-text);
+}
+
+.bandwidth-percent-text::before {
+  content: var(--bandwidth-percentage-text);
+}
+
+.bandwidth-percent {
+  width: var(--bandwidth-percentage);
+}
+
+.storage-color-primary {
+  background-color: var(--storage-primary-color);
+}
+
+.storage-color-secondary {
+  background-color: var(--storage-secondary-color);
+}
+
+.storage-text::before {
+  content: var(--storage-text);
+}
+
+.storage-percent-text::before {
+  content: var(--storage-percentage-text);
+}
+
+.storage-percent {
+  width: var(--storage-percentage);
+}
+
+.users-color-primary {
+  background-color: var(--user-primary-color);
+}
+
+.users-color-secondary {
+  background-color: var(--user-secondary-color);
+}
+
+.users-text::before {
+  content: var(--user-text);
+}
+
+.users-percent-text::before {
+  content: var(--user-percentage-text);
+}
+
+.users-percent {
+  width: var(--user-percentage);
+}
+
+.visitors-color-primary {
+  background-color: var(--visitor-primary-color);
+}
+
+.visitors-color-secondary {
+  background-color: var(--visitor-secondary-color);
+}
+
+.visitors-text::before {
+  content: var(--visitor-text);
+}
+
+.visitors-percent-text::before {
+  content: var(--visitor-percentage-text);
+}
+
+.visitors-percent {
+  width: var(--visitor-percentage);
+}
+
+.email-color-primary {
+  background-color: var(--email-primary-color);
+}
+
+.email-color-secondary {
+  background-color: var(--email-secondary-color);
+}
+
+.email-text::before {
+  content: var(--email-text);
+}
+
+.email-percent-text::before {
+  content: var(--email-percentage-text);
+}
+
+.email-percent {
+  width: var(--email-percentage);
+}
+
+.basic-color-primary {
+  background-color: var(--basic-primary-color);
+}
+
+.basic-color-secondary {
+  background-color: var(--basic-secondary-color);
+}
+
+.basic-text::before {
+  content: var(--basic-text);
+}
+
+.basic-percent-text::before {
+  content: var(--basic-percentage-text);
+}
+
+.basic-percent {
+  width: var(--basic-percentage);
+}
+
+.other-color-primary {
+  background-color: var(--other-primary-color);
+}
+
+.other-color-secondary {
+  background-color: var(--other-secondary-color);
+}
+
+.other-text::before {
+  content: var(--other-text);
+}
+.other-percent-text::before {
+  content: var(--other-percentage-text);
+}
+.other-percent {
+  width: var(--other-percentage);
+}

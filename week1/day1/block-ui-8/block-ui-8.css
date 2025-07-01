@@ -1,0 +1,123 @@
+:root {
+  --color-red: #f75354;
+  --color-green: #51d567;
+  --color-blue: #619cec;
+  --color-cyan: #31c8dd;
+  --color-magenta: #cb79e7;
+  --color-pink: #fe60e8;
+  --color-yellow: #fcd518;
+  --color-orange: #f78153;
+
+  --box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  --box-width: 40vw;
+  --box-height: 300px;
+  --text-color: #777777;
+
+  --bar-width: 25vw;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #dceffff4;
+  height: 100vh;
+  justify-content: center;
+}
+
+.box {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--box-shadow);
+  align-items: center;
+  width: var(--box-width);
+  height: var(--box-height);
+  background-color: white;
+  border-radius: 10px;
+  justify-content: space-evenly;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  width: 35vw;
+}
+
+.bar {
+  width: var(--bar-width);
+  height: 30px;
+  background-color: rgba(226, 226, 226, 0.838);
+  display: flex;
+  justify-content: start;
+  border-radius: 5px;
+}
+
+.bar-red {
+  background-color: var(--color-red);
+  width: 15vw;
+  height: 30px;
+}
+
+.bar-green {
+  background-color: var(--color-green);
+  width: 12vw;
+  height: 30px;
+}
+
+.bar-cyan {
+  background-color: var(--color-cyan);
+  width: 6vw;
+  height: 30px;
+}
+
+.bar-magenta {
+  background-color: var(--color-magenta);
+  width: 12vw;
+  height: 30px;
+}
+
+.bar-yellow {
+  background-color: var(--color-yellow);
+  width: 15vw;
+  height: 30px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  fill: white;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.icon-red {
+  background-color: var(--color-red);
+}
+
+.icon-green {
+  background-color: var(--color-green);
+}
+
+.icon-cyan {
+  background-color: var(--color-cyan);
+}
+
+.icon-magenta {
+  background-color: var(--color-magenta);
+}
+
+.icon-yellow {
+  background-color: var(--color-yellow);
+}
+
+.nested {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-color);
+}

@@ -1,0 +1,132 @@
+:root {
+  --color-orange: #f78153;
+  --color-yellow: #fcd518;
+  --color-red: #f75354;
+  --color-green: #51d567;
+  --color-cyan: #31c8dd;
+
+  --bar-width: 20px;
+  --bar-height: 60px;
+
+  --upper-color: #ffffff;
+  --lower-color: #fcfcfcde;
+
+  --counter-color: #9ad7ff;
+  --counter-size: 50px;
+
+  --label-size: 12px;
+  --label-color: #aaaaaa;
+
+  --title-size: 15px;
+  --title-color: #4d4d4dcd;
+
+  --item-radius: 5px;
+  --item-width: 20%;
+  --item-height: 300px;
+  --item-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  --red-height: 20px;
+  --yellow-height: 40px;
+  --green-height: 10px;
+  --orange-height: 35px;
+  --cyan-height: 45px;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  width: var(--item-width);
+  height: var(--item-height);
+  background-color: var(--upper-color);
+  border-radius: var(--item-radius);
+  box-shadow: var(--item-shadow);
+}
+
+.upper-part {
+  display: flex;
+  flex-direction: column;
+  height: 150px;
+  justify-content: center;
+  background-color: var(--upper-color);
+  border: 1px solid #e0e0e0;
+}
+
+.lower-part {
+  height: 150px;
+  background-color: var(--lower-color);
+  border: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.bar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.bar {
+  width: var(--bar-width);
+  height: var(--bar-height);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border: 1px solid #e0e0e0;
+}
+
+.bar-red {
+  background-color: var(--color-red);
+  height: var(--red-height);
+}
+
+.bar-yellow {
+  background-color: var(--color-yellow);
+  height: var(--yellow-height);
+}
+
+.bar-green {
+  background-color: var(--color-green);
+  height: var(--green-height);
+}
+
+.bar-orange {
+  background-color: var(--color-orange);
+  height: var(--orange-height);
+}
+
+.bar-cyan {
+  background-color: var(--color-cyan);
+  height: var(--cyan-height);
+}
+
+.counter-text {
+  font-size: var(--counter-size);
+  color: var(--counter-color);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.label-text {
+  font-size: var(--label-size);
+  color: var(--label-color);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.title-text {
+  font-size: var(--title-size);
+  color: var(--title-color);
+  text-align: center;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
