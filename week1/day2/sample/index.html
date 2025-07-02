@@ -1,13 +1,61 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css" />
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <!-- <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script> -->
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <button id="changeTextBtn" onclick="changeText()">Click me</button>
+    <div id="textDisplay"></div>
+
+    <button id="toggleHighlightBtn" onclick="toggle()">Toggle</button>
+    <div class="box transition"></div>
+
+    <input type="text" id="itemInput" placeholder="Type something..." />
+    <button id="addItemBtn" onclick="addItem()">Add Item</button>
+    <ul id="itemList"></ul>
+
+    <ul id="rmList"></ul>
+
+    <button id="changeImageBtn" onclick="changeImageSrc()">Change source</button>
+    <img id="mainImage" src="" alt="" class="image">
+
+    <input type="text" id="usernameInput" placeholder="Enter username" />
+    <button id="submitUsername" type="submit" onclick="userAlert()">Submit</button>
+
+    <button class="colorBtn">Push me1</button>
+    <button class="colorBtn">Push me2</button>
+    <button class="colorBtn">Push me3</button>
+    <button class="colorBtn">Push me4</button>
+
+    <div class="hoverBox"></div>    
+
+    <p id="clockDisplay"></p>
+
+    <input type="email" id="emailInput" placeholder="Enter your email" />
+    <button id="validateBtn" onclick="validateEmail()">Submit Email</button>
+    <span id="errorMessage"></span>
+
+
+    <button id="hideParaBtn" onclick="hideParagraph()">Hide para</button>
+    <p id="infoPara">This is a paragraph that will be hidden.</p>
+
+    <p id="greetingText"></p>
+
+    <input type="text" id="nameInput" placeholder="Enter your name" />
+    <button id="formSubmit" onclick="onSubmit()">Submit</button>
+    <span id="nameError"></span>
+
+    <button id="onceBtn">Click once</button>
+
+    <textarea name="" id="bioInput" maxlength="200"></textarea>
+    <p id="charCount"></p>
+
+    <script src="index.js">
+    </script>
   </body>
 </html>

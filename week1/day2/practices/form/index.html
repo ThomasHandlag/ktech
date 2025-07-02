@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="flex flex-col items-center justify-center h-screen bg-gray-100 gap-4"
+  >
+    <form action="#" class="p-4 flex flex-col align-center w-1/2">
+      <section class="flex flex-row justify-between">
+        <div class="flex flex-col">
+          <input
+            type="text"
+            id="name"
+            class="border rounded p-2 mb-4 w-64"
+            placeholder="Enter your name"
+          />
+          <span id="errorName"></span>
+        </div>
+        <div class="flex flex-col">
+          <input
+            type="email"
+            id="email"
+            class="border rounded p-2 mb-4 w-64"
+            placeholder="Enter your email"
+          />
+          <span id="errorMail"></span>
+        </div>
+      </section>
+      <section class="flex flex-row justify-between">
+        <div class="flex flex-col">
+          <input
+            type="password"
+            id="password"
+            class="border rounded p-2 mb-4 w-64"
+            placeholder="Enter your password"
+          />
+          <span id="errorPassword"></span>
+        </div>
+        <div class="flex flex-col">
+          <input
+            type="password"
+            id="confirmPassword"
+            class="border rounded p-2 mb-4 w-64"
+            placeholder="Confirm your password"
+          />
+          <span id="errorConfirmPassword"></span>
+        </div>
+      </section>
+      <section class="flex flex-col">
+        <input
+          type="text"
+          id="phone"
+          class="border rounded p-2 mb-4 w-64"
+          placeholder="Enter your phone number"
+        />
+        <span id="errorPhone"></span>
+      </section>
+      <section class="flex flex-row justify-between">
+        <label for="male">male</label>
+        <input type="radio" checked id="male" value="male" name="gender" />
+        <label for="female">female</label>
+        <input type="radio" id="female" value="female" name="gender" />
+        <label for="other">other</label>
+        <input type="radio" id="other" value="other" name="gender" />
+      </section>
+
+      <section class="flex flex-row justify-between">
+        <label for="dob">Birthday</label>
+        <input type="date" id="dob" class="border rounded p-2 mb-4 w-64" />
+        <span id="errorBod"></span>
+      </section>
+      <section class="flex flex-row justify-between">
+        <label for="country">Country</label>
+        <select name="conuntry" id="country">
+          <option value="en">Bristish</option>
+          <option value="vn">Vietnam</option>
+          <option value="ko">Korean</option>
+          <option value="jp">Japan</option>
+          <option value="cn">China</option>
+        </select>
+      </section>
+      <section class="flex flex-wrap">
+        <div class="flex flex-row">
+          <input type="checkbox" id="games" name="hobbies" value="games" />
+          <label for="games">Games</label>
+        </div>
+        <div>
+          <input type="checkbox" id="sport" name="hobbies" value="sport" />
+          <label for="sport">Sport</label>
+        </div>
+        <div>
+          <input type="checkbox" id="music" name="hobbies" value="music" />
+          <label for="music">Music</label>
+        </div>
+        <div>
+          <input type="checkbox" id="explore" name="hobbies" value="explore" />
+          <label for="explore">Explore</label>
+        </div>
+        <span id="errorHobby"></span>
+      </section>
+      <section class="flex flex-row justify-between">
+        <label for="avatar" class="mb-4">Upload your avatar</label>
+        <input type="file" id="avatar" class="border rounded p-2 mb-4 w-64" />
+        <span id="errorAvatar"></span>
+      </section>
+      <section class="flex flex-col">
+        <textarea name="bio" id="bio" placeholder="Enter your bio"></textarea>
+        <span id="errorBio"></span>
+      </section>
+      <button type="submit" class="p-2 bg-green-400">Submit</button>
+    </form>
+    <script src="index.js"></script>
+  </body>
+</html>

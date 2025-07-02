@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+      };
+    </script>
+    <style>
+      html.dark body {
+        transition: background-color 0.3s ease;
+      }
+      html:not(.dark) body {
+        transition: background-color 0.3s ease;
+      }
+    </style>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body
+    class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 min-h-screen p-8"
+  >
+    <header class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-bold">Dashboard</h1>
+      <div class="flex items-center space-x-4">
+        <span id="clock" class="text-lg"></span>
+        <span id="greetingText" class="text-lg"></span>
+        <button
+          id="theme-toggle"
+          class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <span id="moon-icon"
+            ><i class="w-6 h-6" data-lucide="sun-medium"></i
+          ></span>
+
+          <span id="sun-icon" class="hidden">
+            <i class="w-6 h-6" data-lucide="moon-star"></i>
+          </span>
+        </button>
+      </div>
+    </header>
+
+    <section class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md mb-8">
+      <h2 class="text-2xl font-bold mb-4">To-Do List</h2>
+
+      <div class="flex items-center space-x-2 mb-4">
+        <input
+          type="text"
+          id="todoInput"
+          placeholder="Enter a task"
+          class="flex-grow p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <button
+          id="addBtn"
+          class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Add Task
+        </button>
+      </div>
+
+      <div class="flex space-x-2 mb-4">
+        <button
+          id="fAll"
+          class="px-4 py-2 border border-blue-500 bg-blue-500 text-white rounded-md"
+        >
+          All
+        </button>
+        <button
+          id="fCompleted"
+          class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500"
+        >
+          Completed
+        </button>
+        <button
+          id="fIncomplete"
+          class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500"
+        >
+          Incomplete
+        </button>
+      </div>
+
+      <div id="todos" class="space-y-2"></div>
+    </section>
+
+    <section class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
+      <h2 class="text-2xl font-bold mb-4">Sticky Notes</h2>
+
+      <div class="flex items-center space-x-2 mb-4">
+        <input
+          id="noteInput"
+          type="text"
+          placeholder="Write a note..."
+          class="flex-grow p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <button
+          id="addNoteBtn"
+          class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Add Note
+        </button>
+      </div>
+
+      <div
+        id="notes"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+      ></div>
+    </section>
+    <script src="index.js"></script>
+
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
