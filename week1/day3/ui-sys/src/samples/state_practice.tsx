@@ -9,6 +9,7 @@ import SlideThumb from "./slide_thumb";
 import daysac from "../assets/images/samples/daysac.jpeg";
 import ButtonBar from "./button_bars";
 import Accordions from "./accordion_btn";
+import LikeBtn from "./like_btn";
 
 const itemList = [
   {
@@ -95,6 +96,7 @@ const StatePractice = () => {
         className="px-4 py-2"
       />
       <Accordions />
+      <LikeBtn/>
     </div>
   );
 };

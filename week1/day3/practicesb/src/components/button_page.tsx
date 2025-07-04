@@ -36,6 +36,14 @@ const ButtonPages = () => {
         onClick={() => {}}
         trailing={<span></span>}
       />
+      <MButton
+        className={"bg-white rounded-xl border-2 border-black justify-between"}
+        leading={<FaGoogle />}
+        onClick={() => {}}
+        trailing={<span></span>}
+      >
+        <span className="capitalize">Continue with email</span>
+      </MButton>
     </div>
   );
 };
