@@ -5,7 +5,7 @@ type NavigatorProps = {
 };
 
 const Navigator = ({ onPageChange, items, className }: NavigatorProps) => {
-  return <nav className={`fixed ${className}`}>
+  return <nav className={`top-0 ${className}`}>
     {items?.map((item, index) => (
       <button
         key={index}

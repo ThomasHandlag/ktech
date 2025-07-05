@@ -25,7 +25,7 @@ const Rate2 = () => {
     <div className="flex flex-row justify-center items-center gap-2">
       <div className="flex flex-row justify-center items-center">
         {Array.from({ length: 5 }, (_, index) => (
-          <StarBtn id={rate} onClick={setRate} index={index} />
+          <StarBtn id={rate} key={index} onClick={setRate} index={index} />
         ))}
       </div>
       <span className="">{textWhenRate(rate)}</span>

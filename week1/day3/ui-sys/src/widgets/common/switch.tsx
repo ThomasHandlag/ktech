@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 type SwitchProps = {
   onChange?: (checked: boolean) => void;
   checked?: boolean;
@@ -14,25 +12,25 @@ const Switch = ({
   onChange,
   checked,
   className,
-  child,
   checkedClass,
   uncheckedClass,
   style,
 }: SwitchProps) => {
-  const [value, setChecked] = useState<boolean>(checked ?? false);
-
   const handleChange = (value: boolean) => {
-    setChecked(value);
     onChange?.(value);
   };
 
   return (
     <button
-      onClick={() => handleChange(!value)}
+      onClick={() => handleChange(!checked)}
       style={{ ...style }}
-      className={`${className} ${value ? checkedClass : uncheckedClass}`}
+      className={`${className} ${checked ? checkedClass : uncheckedClass}`}
     >
-      {child}
+      <span
+        className={`bg-indigo-500 w-12 h-12 rounded-full text-sm px-2 transition-all ease-in duration-300 ${
+          checked ? "translate-x-12" : "translate-x-0"
+        }`}
+      ></span>
     </button>
   );
 };

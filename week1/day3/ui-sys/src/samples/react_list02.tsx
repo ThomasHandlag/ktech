@@ -37,7 +37,7 @@ const mockData = [
 
 const ReactList02 = () => {
   return (
-    <div className="flex flex-col items-center w-full h-[600px]">
+    <div className="flex flex-col items-center w-full">
       <div className="flex flex-row justify-between w-full">
         <div className="text-xl font-bold">Phụ kiện tương thích</div>
       </div>
