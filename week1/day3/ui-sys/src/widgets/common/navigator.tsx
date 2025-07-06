@@ -1,6 +1,6 @@
 type NavigatorProps = {
   onPageChange?: (page: number) => void;
-  items?: React.ReactElement[];
+  items?: React.ReactNode[];
   className?: string;
 };
 

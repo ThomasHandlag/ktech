@@ -177,6 +177,7 @@ const Day5Homework2 = () => {
               label="Username"
               id="username"
               placeholder="Enter your username"
+              className="w-[400px] border border-gray-300 rounded-xl shadow-md"
               onError={(value) => {
                 if (value.length < 3) {
                   return "Username must be at least 3 characters long";
@@ -191,6 +192,7 @@ const Day5Homework2 = () => {
               label="Email"
               type="email"
               id="email"
+              className="w-[400px] border border-gray-300 rounded-xl shadow-md"
               placeholder="Enter your email"
               onError={validateEmail}
               onChange={(value) =>
@@ -201,6 +203,7 @@ const Day5Homework2 = () => {
               label="Password"
               type="password"
               placeholder="Enter your password"
+              className="w-[400px] border border-gray-300 rounded-xl shadow-md"
               onError={validatePassword}
               onChange={(value) =>
                 setFormData({ ...formData, password: value.target.value })
@@ -210,6 +213,7 @@ const Day5Homework2 = () => {
               label="Confirm Password"
               type="password"
               placeholder="Enter your password"
+              className="w-[400px] border border-gray-300 rounded-xl shadow-md"
               onChange={(value) => setConfirmPassword(value.target.value)}
               onError={(value) => {
                 const password = formData.password;
@@ -219,6 +223,7 @@ const Day5Homework2 = () => {
             <TextFormField
               label="Phone Number"
               type="text"
+              className="w-[400px] border border-gray-300 rounded-xl shadow-md"
               placeholder="Your phone number"
               onError={validatePhoneNumber}
               onChange={(value) =>

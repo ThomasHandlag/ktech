@@ -23,7 +23,7 @@ const TextField = (props: TextFieldProps) => {
 
   return (
     <div
-      className={`flex items-center flex-row w-[400px] px-4 bg-white shadow-md rounded-xl ${props.className}`}
+      className={`flex items-center flex-row px-4 bg-white shadow ${props.className}`}
     >
       {props.leading}
       <input

@@ -41,7 +41,7 @@ const TextFormField = (props: TextFormFieldProps) => {
       <label className="text-gray-700">{props.label}</label>
       <TextField
         onChange={handleChange}
-        className="border border-gray-300"
+        className={`${props.className} border border-gray-300`}
         id={props.id}
         placeholder={props.placeholder}
         disabled={props.disabled}
