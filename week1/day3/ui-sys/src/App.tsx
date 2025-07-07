@@ -8,6 +8,9 @@ import Day5 from "./day5/day5";
 import Day5Homework1 from "./day5/day5_homework1";
 import Day5Homework2 from "./day5/day5_homework2";
 import Day5Homework3 from "./day5/day5_homework3";
+import ButtonPages from "./day4/button_page";
+import SeachFieldPage from "./day4/seach_field_page";
+import CardPage from "./day4/card_page";
 
 const App = () => {
   const [page, setPage] = useState<number>(0);
@@ -16,6 +19,9 @@ const App = () => {
   };
 
   const pages: ReactElement[] = [
+    ButtonPages(),
+    SeachFieldPage(),
+    CardPage(),
     ReactList02(),
     StatePractice(),
     Day5(),
@@ -25,13 +31,16 @@ const App = () => {
   ];
 
   const navData: string[] = [
-    "day3",
+    "day3-btns",
+    "day3-search-fields",
+    "day3-cards",
     "day4",
+    "day4-2",
     "day5",
     "day5homework1",
     "day5homework2",
     "day5homework3",
-    "day9",
+    "day6",
     "day10",
     "day11",
     "day12",
