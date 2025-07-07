@@ -10,9 +10,9 @@ export type CartItem = {
 
 export const CartContext = React.createContext({
   cartItems: [] as CartItem[],
-  addItem: (product: Product) => {},
-  decreaseItem: (productId: number) => {},
-  removeItem: (productId: number) => {},
+  addItem: (product: Product) => {console.log(product);},
+  decreaseItem: (productId: number) => {console.log(productId);},
+  removeItem: (productId: number) => {console.log(productId);},
 });
 
 export const useCart = () => useContext(CartContext);

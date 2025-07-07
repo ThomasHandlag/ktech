@@ -3,18 +3,23 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://ThomasHandlag.github.io/ktech/week1/day3/ui-sys/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start" : "ui-sys start",
+    "predeploy": "npm run build",
+    "test": "ui-sys test",
+    "eject": "ui-sys eject"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "tailwindcss": "^4.1.11",
-    "react-icons": "^5.5.0"
+    "react-icons": "^5.5.0",
+    "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",

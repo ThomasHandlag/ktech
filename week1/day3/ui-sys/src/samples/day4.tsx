@@ -7,3 +7,5 @@ const Day4 = () => {
         </div>
     );
 }
+
+export default Day4;
