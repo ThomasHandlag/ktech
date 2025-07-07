@@ -11,6 +11,8 @@ import Day5Homework3 from "./day5/day5_homework3";
 import ButtonPages from "./day4/button_page";
 import SeachFieldPage from "./day4/seach_field_page";
 import CardPage from "./day4/card_page";
+import Day6Practice from "./day6/day6practice";
+import Day6Homework from "./day6/day6homework";
 
 const App = () => {
   const [page, setPage] = useState<number>(0);
@@ -28,6 +30,8 @@ const App = () => {
     Day5Homework1(),
     Day5Homework2(),
     Day5Homework3(),
+    Day6Practice(),
+    Day6Homework(),
   ];
 
   const navData: string[] = [
@@ -41,7 +45,7 @@ const App = () => {
     "day5homework2",
     "day5homework3",
     "day6",
-    "day10",
+    "day6homework",
     "day11",
     "day12",
     "day13",

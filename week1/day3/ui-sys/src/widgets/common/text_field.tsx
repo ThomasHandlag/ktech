@@ -14,6 +14,7 @@ type TextFieldProps = {
   type?: "text" | "password" | "email" | "number" | "date" | "tel" | "file";
   autoComplete?: "on" | "off";
   id?: string;
+  name?: string;
 };
 
 const TextField = (props: TextFieldProps) => {
@@ -23,11 +24,14 @@ const TextField = (props: TextFieldProps) => {
 
   return (
     <div
-      className={`flex items-center flex-row px-4 bg-white shadow ${props.className}`}
+      className={`flex items-center flex-row px-4 ${
+        props.className ?? "bg-white shadow rounded-xl"
+      }`}
     >
       {props.leading}
       <input
         id={props.id}
+        name={props.name}
         type={props.type}
         disabled={props.disabled}
         required={props.required}
