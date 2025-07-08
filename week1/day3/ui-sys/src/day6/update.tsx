@@ -5,9 +5,8 @@ import type { User } from "./list";
 
 type UpdateProps = {
   onUpdate: (user: User) => void;
-  userId: number | null;
+  user: User | null;
   onClickOutside?: () => void;
-  isShow: boolean;
 };
 
 const Update = (props: UpdateProps) => {
@@ -23,10 +22,10 @@ const Update = (props: UpdateProps) => {
   const baseUrl = "https://server.aptech.io/online-shop/customers";
 
   useEffect(() => {
-    // Initialize form data with the provided customer data
+    if (!props.user) return;
     const fetchCustomerData = async () => {
       try {
-        const response = await fetch(baseUrl + "/" + props.userId);
+        const response = await fetch(baseUrl + "/" + props.user!.id);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -49,7 +48,7 @@ const Update = (props: UpdateProps) => {
         });
       }
     });
-  }, [props.userId]);
+  }, [props.user]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>): undefined => {
     const { name, value } = e.target;
@@ -61,7 +60,7 @@ const Update = (props: UpdateProps) => {
 
   return (
     <Modal
-      isShow={props.isShow}
+      isShow={user !== null}
       title="Update User"
       onClickOutside={props.onClickOutside}
       closeLabel="Update"
@@ -69,7 +68,7 @@ const Update = (props: UpdateProps) => {
       onClose={() =>
         props.onUpdate({
           ...user,
-          id: props.userId!,
+          id: props.user!.id,
         })
       }
       children={

@@ -10,7 +10,11 @@ export type ModalProps = {
 
 const Modal = (props: ModalProps) => {
   return (
-    <div onClick={props.onClickOutside}
+    <div onClick={(e) => {
+      if (e.target === e.currentTarget) {
+        props.onClickOutside?.();
+      }
+    }}
       className={`fixed inset-0 bg-black/50 flex items-center justify-center z-50 ${
         props.isShow ? "visible" : "hidden"
       }`}

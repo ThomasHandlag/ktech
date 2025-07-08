@@ -33,7 +33,7 @@ const ListProducts = (props: ListProductsProps) => {
 
   const [snackbar, setSnackbar] = useState({ isShow: false, message: "" });
 
-  const [userID, setUserID] = useState<number | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   const createUser = async (user: User) => {
     const myHeaders = new Headers();
@@ -94,7 +94,7 @@ const ListProducts = (props: ListProductsProps) => {
     urlencoded.append("email", user.email);
 
     const requestOptions = {
-      method: "PUT",
+      method: "PATCH",
       headers: myHeaders,
       body: urlencoded,
     };
@@ -162,7 +162,9 @@ const ListProducts = (props: ListProductsProps) => {
               users.map((user) => (
                 <Item
                   key={user.id}
-                  setModal={() => {}}
+                  setModal={() => {
+                    setUser(user);
+                  }}
                   user={user}
                   onDelete={deleteUser}
                 />
@@ -180,16 +182,18 @@ const ListProducts = (props: ListProductsProps) => {
           setModal(false);
         }}
       />
-
-      <Update
-        isShow={userID !== null}
-        userId={userID ?? null}
-        onUpdate={(e) => {
-          updateUser(e);
-          setUserID(null);
-        }}
-      />
-
+      {user && (
+        <Update
+          user={user}
+          onUpdate={(e) => {
+            updateUser(e);
+            setUser(null);
+          }}
+          onClickOutside={() => {
+            setUser(null);
+          }}
+        />
+      )}
       <SnackBar message={snackbar.message} />
     </div>
   );
