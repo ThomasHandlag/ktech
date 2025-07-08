@@ -97,7 +97,7 @@ const Day6Homework = () => {
         <div>
           <div className="flex flex-row justify-between items-center text-[80px] text-white">
             {Math.floor(weather?.current.temp_c ?? 0)}°
-            <img src={weather?.current.condition.icon ?? ""} className="h-[80px]" />
+            <img src={weather?.current.condition.icon ?? undefined} className="h-[80px]" />
           </div>
           <span className="capitalize text-white font-semibold text-[35px]">
             {weather?.current.condition.text ?? "Loading..."}
