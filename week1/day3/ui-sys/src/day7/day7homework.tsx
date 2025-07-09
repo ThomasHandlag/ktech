@@ -6,7 +6,6 @@ import TextField from "../widgets/common/text_field";
 import { FaSearch } from "react-icons/fa";
 import Avatar from "../widgets/common/avatar";
 import person1 from "../assets/images/samples/person1.png";
-import { BiNotification } from "react-icons/bi";
 import { IoNotifications } from "react-icons/io5";
 
 const Day7Homework = () => {
