@@ -36,6 +36,7 @@ const DatePicker = (props: DatePickerProps) => {
         id={props.id}
         onChange={handleChange}
         value={date}
+        inputMode="text"
         type="date"
         className={`bg-transparent p-2 border border-gray-300 ${props.className}`}
         disabled={props.disabled}

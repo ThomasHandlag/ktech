@@ -25,6 +25,14 @@ import ProductList from "./day7/widgets/product_list.tsx";
 import HomePage from "./day7/pages/home_page.tsx";
 import Paging from "./day7/pages/paging.tsx";
 import Day7Homework from "./day7/day7homework.tsx";
+import Day9Practice1 from "./day9/practice1/day9_practice1";
+import Home1 from "./day9/practice1/home1.tsx";
+import { StrictMode } from "react";
+import Day9Practice2 from "./day9/practice2/day9_practice2.tsx";
+import SignInDay9 from "./day9/practice1/signin_day9.tsx";
+import RegisterDay9 from "./day9/practice1/register_day9.tsx";
+import Day9Practice3 from "./day9/practice3/day8_practice3.tsx";
+import HomeworkDay9 from "./day9/homework/homework_day9.tsx";
 
 export const navData: string[] = [
   "day3-btns",
@@ -40,37 +48,41 @@ export const navData: string[] = [
   "day6homework",
   "day7practice",
   "day7homework",
+  "day9practice1",
+  "day9practice2",
+  "day9practice3",
+  "day9homework",
 ];
 
 export const day7homeworkRoutes: RouteObject[] = [
   {
-    path: 'patient',
+    path: "patient",
     element: <h1>Patient Page</h1>,
   },
   {
-    path: 'overview',
+    path: "overview",
     element: <h1>Overview Page</h1>,
   },
   {
-    path: 'map',
+    path: "map",
     element: <h1>Map Page</h1>,
   },
   {
-    path: 'doctors',
+    path: "doctors",
     element: <h1>Doctors Page</h1>,
-  } ,
+  },
   {
-    path: 'departments',
+    path: "departments",
     element: <h1>Departments Page</h1>,
   },
   {
-    path: 'history',
+    path: "history",
     element: <h1>History Page</h1>,
   },
   {
-    path: 'settings',
+    path: "settings",
     element: <h1>Settings Page</h1>,
-  }
+  },
 ];
 
 export const day7Routes: RouteObject[] = [
@@ -172,9 +184,43 @@ export const routes = createBrowserRouter([
       },
       {
         path: "/day7homework",
-        element: <Day7Homework/>,
+        element: <Day7Homework />,
         children: day7homeworkRoutes,
-      }
+      },
+      {
+        path: "/day9practice1",
+        element: <Day9Practice1 />,
+        children: [
+          {
+            index: true,
+            element: <Home1 />,
+          },
+          {
+            path: "login/:email",
+            element: <SignInDay9 />,
+          },
+          {
+            path: "register/:email",
+            element: <RegisterDay9 />,
+          },
+          {
+            path: "register",
+            element: <RegisterDay9 />,
+          },
+        ],
+      },
+      {
+        path: "/day9practice2",
+        element: <Day9Practice2 />,
+      },
+      {
+        path: "/day9practice3",
+        element: <Day9Practice3 />,
+      },
+      {
+        path: "/day9homework",
+        element: <HomeworkDay9 />,
+      },
     ],
   },
   {
@@ -184,5 +230,7 @@ export const routes = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")!).render(
-  <RouterProvider router={routes} />
+  <StrictMode>
+    <RouterProvider router={routes} />
+  </StrictMode>
 );
