@@ -38,7 +38,7 @@ const DatePicker = (props: DatePickerProps) => {
         value={date}
         inputMode="text"
         type="date"
-        className={`bg-transparent p-2 border border-gray-300 ${props.className}`}
+        className={`bg-transparent datepicker-input p-2 border border-gray-300 ${props.className}`}
         disabled={props.disabled}
         required={props.required}
       />

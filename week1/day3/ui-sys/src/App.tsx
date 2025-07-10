@@ -18,7 +18,7 @@ const App = () => {
     <>
       <div className="w-full grid grid-rows-[auto_1fr] h-screen">
         <nav
-          className={`bg-white shadow-md w-full p-2 overflow-x-auto ${
+          className={`bg-white shadow-md w-full p-2 overflow-x-auto scrollbar ${
             isTop ? "relative" : "fixed z-10 top-0"
           } justify-start flex flex-row items-center gap-10`}
         >
@@ -36,7 +36,7 @@ const App = () => {
               to={`/${item}`}
               key={index}
               className={({ isActive }) =>
-                [isActive ? "bg-indigo-500" : ""] +
+                [isActive ? "bg-indigo-500 text-white" : ""] +
                 " px-4 py-2 rounded-md shadow-md capitalize text-nowrap"
               }
             >

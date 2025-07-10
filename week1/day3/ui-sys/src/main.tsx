@@ -3,6 +3,7 @@ import "./index.css";
 import App from "./App.tsx";
 import {
   createBrowserRouter,
+  Navigate,
   RouterProvider,
   type RouteObject,
 } from "react-router";
@@ -33,6 +34,16 @@ import SignInDay9 from "./day9/practice1/signin_day9.tsx";
 import RegisterDay9 from "./day9/practice1/register_day9.tsx";
 import Day9Practice3 from "./day9/practice3/day8_practice3.tsx";
 import HomeworkDay9 from "./day9/homework/homework_day9.tsx";
+import Day10Practice from "./day10_practice/day10_practice.tsx";
+import LoginDay10 from "./day10_practice/login_day10.tsx";
+import WorkspacePage from "./day10_practice/workspace_page.tsx";
+import {
+  getLocalUser,
+  login,
+  setLocalUser,
+} from "./day10_practice/api/index.tsx";
+import ListDay10 from "./day10_practice/page/list_day10.tsx";
+import CreateTaskDay10 from "./day10_practice/page/create_day10.tsx";
 
 export const navData: string[] = [
   "day3-btns",
@@ -52,6 +63,7 @@ export const navData: string[] = [
   "day9practice2",
   "day9practice3",
   "day9homework",
+  "day10practice",
 ];
 
 export const day7homeworkRoutes: RouteObject[] = [
@@ -220,6 +232,49 @@ export const routes = createBrowserRouter([
       {
         path: "/day9homework",
         element: <HomeworkDay9 />,
+      },
+      {
+        path: "/day10practice",
+        element: <Day10Practice />,
+        loader: async () => {
+          const localUser = getLocalUser();
+          if (localUser) {
+            const response = await login(localUser.email, localUser.password);
+            if (response.ok) {
+              const userData = await response.json();
+              setLocalUser({
+                ...userData.loggedInUser,
+                accessToken: userData.access_token,
+              });
+              return userData;
+            }
+          }
+          return null;
+        },
+        children: [
+          {
+            path: "login",
+            element: <LoginDay10 />,
+          },
+          {
+            path: "workspace",
+            element: <WorkspacePage />,
+            children: [
+              {
+                index: true,
+                element: <Navigate to="list" />,
+              },
+              {
+                path: "list",
+                element: <ListDay10 />,
+              },
+              {
+                path: "create",
+                element: <CreateTaskDay10 />,
+              },
+            ],
+          },
+        ],
       },
     ],
   },

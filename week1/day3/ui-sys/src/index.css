@@ -26,4 +26,8 @@
   .scrollbar::-webkit-scrollbar-thumb:hover {
     background: #c0a0b9;
   }
+
+  .datepicker-input::-webkit-calendar-picker-indicator {
+    display: none;
+  }
 }
