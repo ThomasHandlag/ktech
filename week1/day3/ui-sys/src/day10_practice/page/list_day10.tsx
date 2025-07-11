@@ -108,7 +108,7 @@ const ListDay10 = () => {
             className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             {...register("searchName")}
           />
-          <select {...register("assigneeId")} id="">
+          <select {...register("assigneeId")}>
             <option value="">All Assignees</option>
             <option value="1">Assignee 1</option>
             <option value="2">Assignee 2</option>
@@ -131,6 +131,7 @@ const ListDay10 = () => {
           </button>
           <button
             type="button"
+            onClick={() => setQuery({})}
             className="bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600 transition-colors"
           >
             Clear filter

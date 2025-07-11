@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router";
 import * as yup from "yup";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { inputClass, type CreateDay10Input } from "./create_day10";
@@ -45,6 +44,7 @@ const UpdateDay10 = ({
     defaultValues: {
       title: task.title,
       description: task.description,
+      assignee_id: task.assignee_id,
       start_date: new Date(task.start_date).toISOString().split("T")[0],
       due_date: new Date(task.due_date).toISOString().split("T")[0],
       priority: task.priority,

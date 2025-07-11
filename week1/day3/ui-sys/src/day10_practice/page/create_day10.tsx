@@ -58,7 +58,7 @@ const CreateTaskDay10 = () => {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to create task");
       }
-      navigate(".");
+      navigate(-1);
     } catch (error) {
       console.error("Error creating task:", error);
     }
