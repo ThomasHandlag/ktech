@@ -25,6 +25,10 @@ const ListDay10 = () => {
 
   const [selectedTask, setSelectedTask] = useState<TaskDay10 | null>(null);
 
+  const cellHeaderClass =
+    "px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider";
+  const cellClass = "px-6 py-4 whitespace-nowrap text-sm text-gray-500";
+
   useEffect(() => {
     const fetchTasks = async () => {
       if (user) {
@@ -95,9 +99,6 @@ const ListDay10 = () => {
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <div className="mb-6 flex flex-col items-center justify-start">
-        <h2 className="text-2xl font-semibold text-gray-800">
-          Task Management
-        </h2>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-row gap-4 items-center"
@@ -110,9 +111,9 @@ const ListDay10 = () => {
           />
           <select {...register("assigneeId")}>
             <option value="">All Assignees</option>
-            <option value="1">Assignee 1</option>
-            <option value="2">Assignee 2</option>
-            <option value="3">Assignee 3</option>
+            <option value={1}>Assignee 1</option>
+            <option value={2}>Assignee 2</option>
+            <option value={3}>Assignee 3</option>
           </select>
           <select
             {...register("status")}
@@ -142,24 +143,19 @@ const ListDay10 = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th
+                className={
+                  "px-6 py-4 text-left text-xs font-medium  uppercase tracking-wider  text-black"
+                }
+              >
                 Title
               </th>
-              <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Assignee ID
-              </th>
-              <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
-              </th>
-              <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Start Date
-              </th>
-              <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Due Date
-              </th>
-              <th className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
-              </th>
+              <th className={cellHeaderClass}>Description</th>
+              <th className={cellHeaderClass}>Assignee ID</th>
+              <th className={cellHeaderClass}>Status</th>
+              <th className={cellHeaderClass}>Start Date</th>
+              <th className={cellHeaderClass}>Due Date</th>
+              <th className={cellHeaderClass}>Actions</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -168,7 +164,7 @@ const ListDay10 = () => {
                 (task) =>
                   (!query.status || task.status === query.status) &&
                   (!query.assigneeId ||
-                    task.assignee_id === query.assigneeId) &&
+                    task.assignee_id == query.assigneeId) &&
                   (!query.searchName ||
                     task.title
                       .toLowerCase()
@@ -182,14 +178,13 @@ const ListDay10 = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {task.title}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {task.assignee_id}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className={cellClass}>{task.description}</td>
+                  <td className={cellClass}>{task.assignee_id}</td>
+                  <td className={cellClass}>
                     <span
                       className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                     ${
-                      (task.status === "completed" || task.status === "done")
+                      task.status === "completed" || task.status === "done"
                         ? "bg-green-100 text-green-800"
                         : task.status === "in_progress"
                         ? "bg-yellow-100 text-yellow-800"

@@ -23,8 +23,14 @@ const CreateTaskDay10 = () => {
   const navigate = useNavigate();
 
   const schema = yup.object().shape({
-    title: yup.string().required("Title is required"),
-    description: yup.string().required("Description is required"),
+    title: yup
+      .string()
+      .max(100, "Maximum 100 characters")
+      .required("Title is required"),
+    description: yup
+      .string()
+      .max(500, "Maximum 500 characters")
+      .required("Description is required"),
     priority: yup
       .string()
       .oneOf(["high", "medium", "low"])
@@ -174,7 +180,7 @@ const CreateTaskDay10 = () => {
         </div>
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 shrink"
         >
           Create Task
         </button>

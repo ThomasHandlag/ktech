@@ -1,11 +1,11 @@
 import { useState } from "react";
-import logo from "./logo.png"; // Placeholder for logo image
+import logo from "./logo.png";
 import { FiMenu } from "react-icons/fi";
 import { BiCart } from "react-icons/bi";
 import MButton from "../widgets/common/m_button";
 import { FaSearch } from "react-icons/fa";
 import { PiPlus } from "react-icons/pi";
-import thitbe from "./thitbe.png"; // Placeholder for product image
+import thitbe from "./thitbe.png";
 import { GrClose } from "react-icons/gr";
 import TextField from "../widgets/common/text_field";
 import { CartContext, useCart, type CartItem } from "./home_work3_const";
@@ -253,13 +253,15 @@ const CartSidebar = ({
     total += item.price * item.quantity;
   });
 
-  const {removeItem} = useCart();
+  const { removeItem } = useCart();
 
   const isMobile = window.innerWidth < 768;
 
   return (
     <div
-      className={`lg:w-80 w-full absolute bg-white shadow-lg p-6 z-5 h-[500px] overflow-y-auto ${isMobile ? "left-0" : "right-4"}`}
+      className={`lg:w-80 w-full absolute bg-white shadow-lg p-6 z-5 h-[500px] overflow-y-auto ${
+        isMobile ? "left-0" : "right-4"
+      }`}
       onMouseLeave={onMouseLeave}
     >
       <h3 className="text-gray-700 text-sm font-semibold mb-4">
@@ -272,7 +274,10 @@ const CartSidebar = ({
             className="flex items-center justify-between border-b pb-2"
           >
             <div className="flex items-center space-x-3">
-              <button className="text-gray-400 hover:text-red-500" onClick={removeItem.bind(null, item.id)}>
+              <button
+                className="text-gray-400 hover:text-red-500"
+                onClick={removeItem.bind(null, item.id)}
+              >
                 <GrClose size={16} />
               </button>
               <img
