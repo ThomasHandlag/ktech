@@ -197,7 +197,9 @@ export const routes = createBrowserRouter([
       {
         path: "/day7homework",
         element: <Day7Homework />,
-        children: day7homeworkRoutes,
+        children: [
+          {index: true, element: <Navigate to="patient" />},
+          ...day7homeworkRoutes],
       },
       {
         path: "/day9practice1",
