@@ -15,7 +15,7 @@ const UpdateDay10 = ({
   onClose: () => void;
 }) => {
   const { user } = useAuth();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const schema = yup.object().shape({
     title: yup.string().required("Title is required"),
@@ -61,7 +61,8 @@ const UpdateDay10 = ({
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to update task");
       }
-      navigate(".");
+      // navigate(".");
+      onClose();
     } catch (error) {
       console.error("Error updating task:", (error as Error).message);
     }
