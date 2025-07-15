@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // allow any remote pattern for images
+  images: {
+    remotePatterns: []
+  },
 };
 
 export default nextConfig;

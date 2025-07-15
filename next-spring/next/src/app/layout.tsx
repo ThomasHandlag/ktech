@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
+import { MainNav } from "@/components/custom/main-nav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +29,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <div className="flex flex-col lg:flex-row h-screen">
+          <MainNav />
+          <main className="grow overflow-y-scroll scrollbar">{children}</main>
+        </div>
+        <Toaster duration={2000} />
       </body>
     </html>
   );
