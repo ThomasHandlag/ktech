@@ -11,12 +11,13 @@ import Image from "next/image";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex flex-col h-screen bg-gray-100">
-      <div className="bg-yellow-200 flex items-center justify-center gap-2 p-4">
+      <div className="bg-yellow-200 flex items-center justify-center relative gap-2 p-4 aspect-square h-[100px] w-full">
         <Image
           src="https://cdnv2.tgdd.vn/mwg-static/tgdd/Banner/e4/d2/e4d215b404d123b25e8b8f5c01ac2f56.png"
           alt="Banner Image"
           width={1000}
-          height={200}
+          height={100}
+          priority
           className="object-cover"
         />
       </div>

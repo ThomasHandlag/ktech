@@ -35,35 +35,36 @@ const fetchProducts = async () => {
 const ProductList = ({ products }: { products: Product[] }) => {
   return (
     <div className="flex flex-col items-center justify-center p-4">
-      <Image
-        src="https://cdnv2.tgdd.vn/mwg-static/tgdd/Banner/b6/dd/b6dd779ce5e8a918cc4f557fce984b16.png"
-        alt="Banner"
-        width={1200}
-        height={300}
-        loading="lazy"
-        quality={10}
-        placeholder="blur"
-        blurDataURL="https://via.placeholder.com/1200x300"
-        className="object-cover mb-4"
-      />
+      <div className="relative aspect-square h-[300px] w-full">
+        <Image
+          src="https://cdnv2.tgdd.vn/mwg-static/tgdd/Banner/b6/dd/b6dd779ce5e8a918cc4f557fce984b16.png"
+          alt="Banner"
+          fill
+          priority
+          placeholder="blur"
+          blurDataURL="https://via.placeholder.com/1200x300"
+          className="object-fill mb-4"
+        />
+      </div>
       <div className="grid lg:grid-cols-5 gap-4 sm:grid-cols-1">
-        {products.map((product) => (
+        {products.map((product, index) => (
           <Link
             href={`/day13/detail/${product.id}`}
             key={product.id}
-            className="flex flex-col items-center p-4 border rounded-lg"
+            className="flex flex-col items-center p-4 border rounded-lg aspect-square"
           >
-            <Image
-              src={product.images[0]}
-              alt={product.title}
-              width={200}
-              height={200}
-              className="object-fill mb-2"
-              loading="lazy"
-              quality={10}
-              placeholder="blur"
-              blurDataURL="https://via.placeholder.com/200"
-            />
+            <div className="relative w-full h-[200px]">
+              <Image
+                src={product.images[0]}
+                alt={product.title}
+                fill
+                priority={index < 5}
+                className="object-fill mb-2"
+                loading={index < 5 ? "eager" : "lazy"}
+                placeholder="blur"
+                blurDataURL="https://via.placeholder.com/200"
+              />
+            </div>
             <h3 className="text-ellipsis max-h-20">{product.title}</h3>
             <p className="text-red-500">Price: ${product.price}</p>
           </Link>

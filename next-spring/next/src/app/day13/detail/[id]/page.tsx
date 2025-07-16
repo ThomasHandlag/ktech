@@ -32,7 +32,7 @@ const DetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
 
 const ProductDetail = ({ product }: { product: Product }) => {
   return (
-    <div className="flex flex-col items-center justify-center p-4">
+    <div className="flex flex-col items-center justify-center p-4 aspect-square">
       <h1 className="text-2xl font-bold mb-4">{product.title}</h1>
       <Image
         src={product.images[0]}
@@ -40,6 +40,10 @@ const ProductDetail = ({ product }: { product: Product }) => {
         width={400}
         height={400}
         className="object-cover mb-4"
+        loading="lazy"
+        quality={80}
+        placeholder="blur"
+        blurDataURL="https://via.placeholder.com/400"
       />
       <p className="text-gray-600 mb-2">{product.description}</p>
       <p className="text-red-500 text-lg">Price: ${product.price}</p>
