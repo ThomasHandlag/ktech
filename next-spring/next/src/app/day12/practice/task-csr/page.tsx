@@ -3,6 +3,7 @@
 import { Tasks } from "@/app/types/task";
 import Link from "next/link";
 import React from "react";
+import { toast } from "sonner";
 
 const baseUrl = "https://server.aptech.io/workspaces/tasks";
 const token =
@@ -67,7 +68,11 @@ const Page = () => {
           ))}
       </div>
       <button
-        onClick={createTask}
+        onClick={() => {
+          createTask().then(() => {
+            toast.success("Tasks created successfully!");
+          });
+        }}
         className="mt-4 p-2 bg-blue-500 text-white rounded"
       >
         Load More

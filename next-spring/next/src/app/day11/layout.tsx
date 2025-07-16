@@ -4,12 +4,12 @@ const Day11Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex flex-col min-h-screen">
       <nav className="w-full p-4 bg-indigo-400">
-        <ul className="flex space-x-4">
-          <li>
+        <div className="flex space-x-4">
+          <div>
             <Link href="/day11" className="text-white hover:underline">
               Home
             </Link>
-          </li>
+          </div>
           <li>
             <Link href="/day11/blog" className="text-white hover:underline">
               Blog
@@ -30,7 +30,7 @@ const Day11Layout = ({ children }: { children: React.ReactNode }) => {
               Login
             </Link>
           </li>
-        </ul>
+        </div>
       </nav>
       <div className="p-6 rounded-lg shadow-md">
         {children}
