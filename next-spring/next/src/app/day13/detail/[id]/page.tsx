@@ -16,8 +16,8 @@ const fetchProductData = async (id: number) => {
   return data;
 };
 
-const DetailPage = async ({ params }: { params: { id: string } }) => {
-  const productId = parseInt(params.id, 10);
+const DetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const productId = parseInt((await params).id, 10);
   const product = await fetchProductData(productId);
   return (
     <div className="flex flex-col items-center justify-center p-4">

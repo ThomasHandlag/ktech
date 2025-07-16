@@ -15,7 +15,7 @@ const Page = async () => {
 
 export default Page;
 
-const baseUrl = "https://api.escuelajs.co/api/v1/products?offset=0&limit=10";
+const baseUrl = "https://api.escuelajs.co/api/v1/products?offset=0&limit=30";
 
 const fetchProducts = async () => {
   const res = await fetch(baseUrl, {
