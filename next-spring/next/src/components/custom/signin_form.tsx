@@ -4,6 +4,8 @@ import { signIn, useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect, ChangeEvent } from "react";
 import { toast } from "sonner";
+import { Button } from "../ui/button";
+import { LucideLoader2 } from "lucide-react";
 
 const SignInForm = ({ csrfToken }: { csrfToken: string | undefined }) => {
   const router = useRouter();
@@ -54,7 +56,7 @@ const SignInForm = ({ csrfToken }: { csrfToken: string | undefined }) => {
       if (!res?.error) {
         router.push(callbackUrl);
       } else {
-        setError("Invalid email or password");
+        toast.error(res.error || "An error occurred");
       }
     } catch (cerror) {
       setLoading({
@@ -84,6 +86,7 @@ const SignInForm = ({ csrfToken }: { csrfToken: string | undefined }) => {
             <input
               type="email"
               required
+              autoComplete="email"
               onChange={handleChange}
               name="email"
               className="border border-gray-300 rounded p-2"
@@ -98,6 +101,7 @@ const SignInForm = ({ csrfToken }: { csrfToken: string | undefined }) => {
             <input
               required
               type="password"
+              autoComplete="current-password"
               onChange={handleChange}
               name="password"
               id="password"
@@ -110,13 +114,16 @@ const SignInForm = ({ csrfToken }: { csrfToken: string | undefined }) => {
           <label className="text-sm capitalize">remember me</label>
         </div>
         <div className="grid grid-cols-4 gap-5">
-          <button
+          <Button
             type="submit"
             disabled={loading.accLoading}
             className="bg-blue-500 col-span-1 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer transition-colors duration-200"
           >
-            {loading.accLoading ? "Signing in..." : "Sign In"}
-          </button>
+            {loading.accLoading && (
+              <LucideLoader2 className="animate-spin mr-2" />
+            )}
+            Sign In
+          </Button>
         </div>
       </form>
     </div>
