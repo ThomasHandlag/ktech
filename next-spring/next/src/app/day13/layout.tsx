@@ -50,7 +50,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           </div>
         </div>
       </div>
-      <div className="w-full p-4">{children}</div>
+      <div className="w-full p-4 h-screen overflow-y-scroll">{children}</div>
     </div>
   );
 };

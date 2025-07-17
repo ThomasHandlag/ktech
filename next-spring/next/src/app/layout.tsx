@@ -31,7 +31,7 @@ export default function RootLayout({
       >
         <div className="flex flex-col lg:flex-row h-screen">
           <MainNav />
-          <main className="grow overflow-y-scroll scrollbar">{children}</main>
+          {children}
         </div>
         <Toaster duration={2000} />
       </body>

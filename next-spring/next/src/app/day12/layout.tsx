@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div>
+    <div className="w-full">
       <header className="flex justify-between items-center p-4 bg-indigo-600 text-white">
         <Link href="/day12" className="text-2xl font-bold">
           Day 12

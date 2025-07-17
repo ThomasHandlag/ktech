@@ -12,13 +12,19 @@ import {
 } from "@/components/ui/sheet";
 import { MenuIcon } from "lucide-react"; // Example icon library
 import { mainRoutesList } from "@/lib/routes";
+import { usePathname } from "next/navigation";
 
 export function MainNav() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const [index, setIndex] = useState(-1);
-
   const linkClass = "hover:underline capitalize px-4 py-2 rounded shadow";
+
+  const pathname = usePathname();
+
+  const isActive = (route: string): boolean => {
+    const routeName = pathname.split("/");
+    return routeName.includes(route.split("/").pop() || "");
+  };
 
   return (
     <nav className="flex p-4 bg-gray-800 text-white overflow-y-scroll scrollbar">
@@ -27,9 +33,10 @@ export function MainNav() {
         <Link
           href="/"
           className={`${linkClass} ${
-            index === -1 ? "text-blue-500 bg-white" : "text-white bg-blue-500"
+            pathname === "/"
+              ? "text-blue-500 bg-white"
+              : "text-white bg-blue-500"
           }`}
-          onClick={() => setIndex(-1)}
         >
           Home
         </Link>
@@ -38,11 +45,10 @@ export function MainNav() {
             key={idx}
             href={route}
             className={`${linkClass} ${
-              index === idx
+              isActive(route)
                 ? "text-blue-500 bg-white"
                 : "text-white bg-blue-500"
             }`}
-            onClick={() => setIndex(idx)}
           >
             {route.split("/").pop()}
           </Link>
@@ -66,10 +72,9 @@ export function MainNav() {
                   key={idx}
                   href={route}
                   className={`hover:border-blue-400 border-b-2 capitalize px-4 py-2 ${
-                    index === idx ? " border-blue-500" : "border-blue-200"
+                    isActive(route) ? " border-blue-500" : "border-blue-200"
                   }`}
                   onClick={() => {
-                    setIndex(idx);
                     setIsOpen(false);
                   }}
                 >
