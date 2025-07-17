@@ -1,5 +1,5 @@
 import React from "react";
-import { AuthContext } from "./context_day10";
+import { AuthContext } from "./context_day13";
 
 export const useAuth = () => {
   const context = React.useContext(AuthContext);
@@ -9,7 +9,7 @@ export const useAuth = () => {
   return context;
 };
 
-export interface TaskDay10 {
+export interface TaskDay13 {
   id: number;
   created_time: string;
   updated_time: string;

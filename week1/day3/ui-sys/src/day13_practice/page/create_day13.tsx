@@ -1,9 +1,10 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { createTask } from "../api";
-import { useAuth } from "../const_day10";
 import { useNavigate } from "react-router";
+import axios from "axios";
+import { useAuthStore } from "../api/useAuthStore";
+import { BASE_URL } from "../api/api-client";
 
 export interface CreateDay10Input {
   title: string;
@@ -18,8 +19,8 @@ export interface CreateDay10Input {
 export const inputClass =
   "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 px-4 py-2";
 
-const CreateTaskDay10 = () => {
-  const { user } = useAuth();
+const CreateTaskDay13 = () => {
+  const { access_token } = useAuthStore();
   const navigate = useNavigate();
 
   const schema = yup.object({
@@ -58,13 +59,29 @@ const CreateTaskDay10 = () => {
   const onSubmit: SubmitHandler<CreateDay10Input> = async (
     data: CreateDay10Input
   ) => {
-    const response = await createTask(data, user!.accessToken);
     try {
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to create task");
-      }
-      navigate(-1);
+      await axios.post(
+        `${BASE_URL}/workspaces/tasks`,
+        {
+          ...data,
+          start_date: data.start_date.toISOString(),
+          due_date: data.due_date.toISOString(),
+          assignee_id: data.assignee_id, 
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      ).then((res) => {
+        if (res.status === 201) {
+          navigate(-1);
+        } else {
+          console.error(res);
+        }
+      });
+      
     } catch (error) {
       console.error("Error creating task:", error);
     }
@@ -189,4 +206,4 @@ const CreateTaskDay10 = () => {
   );
 };
 
-export default CreateTaskDay10;
+export default CreateTaskDay13;

@@ -1,29 +1,31 @@
 import { useEffect, useState } from "react";
-import { useAuth, type TaskDay10 } from "../const_day10";
-import { deleteTask, getTasks } from "../api";
+import { type TaskDay13 } from "../const_day13";
+import { deleteTask } from "../api";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import UpdateDay10 from "./update_day10";
+import UpdateDay13 from "./update_day13";
+import { useAuthStore } from "../api/useAuthStore";
+import apiClient from "../api/api-client";
 
-interface Day10ListQuery {
+interface Day13ListQuery {
   status?: string;
   assigneeId?: number;
   searchName?: string;
 }
 
-interface FilterDay10Input {
+interface FilterDay13Input {
   status: string;
   assigneeId: number;
   searchName: string;
 }
 
-const ListDay10 = () => {
-  const { user } = useAuth();
+const ListDay13 = () => {
+  const { access_token, loggedInUser: user } = useAuthStore();
 
-  const [listTasks, setListTasks] = useState<TaskDay10[]>([]);
+  const [listTasks, setListTasks] = useState<TaskDay13[]>([]);
 
-  const [query, setQuery] = useState<Day10ListQuery>({});
+  const [query, setQuery] = useState<Day13ListQuery>({});
 
-  const [selectedTask, setSelectedTask] = useState<TaskDay10 | null>(null);
+  const [selectedTask, setSelectedTask] = useState<TaskDay13 | null>(null);
 
   const cellHeaderClass =
     "px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider";
@@ -31,15 +33,15 @@ const ListDay10 = () => {
 
   useEffect(() => {
     const fetchTasks = async () => {
-      if (user) {
+      if (access_token) {
         try {
-          const response = await getTasks(user.accessToken);
-          if (!response.ok) {
-            const errorRes = await response.json();
-            throw new Error(`Error fetching tasks: ${errorRes.message}`);
-          }
-          const tasks: TaskDay10[] = await response.json();
-          setListTasks(tasks);
+          const dat = await apiClient.get("/workspaces/tasks") as TaskDay13[];
+          // const response = await axios.get(`${BASE_URL}/workspaces/tasks`, {
+          //   headers: {
+          //     Authorization: `Bearer ${access_token}`,
+          //   },
+          // });
+          setListTasks(dat);
         } catch (error) {
           console.error("Error fetching tasks:", (error as Error).message);
         }
@@ -71,9 +73,9 @@ const ListDay10 = () => {
   };
 
   const handleDeleteTask = async (taskId: number) => {
-    if (user) {
+    if (access_token) {
       try {
-        await deleteTask(taskId, user.accessToken, (error) => {
+        await deleteTask(taskId, access_token, (error) => {
           if (!error) {
             setListTasks((prevTasks) =>
               prevTasks.filter((task) => task.id !== taskId)
@@ -88,9 +90,9 @@ const ListDay10 = () => {
     }
   };
 
-  const { register, handleSubmit } = useForm<FilterDay10Input>();
+  const { register, handleSubmit } = useForm<FilterDay13Input>();
 
-  const onSubmit: SubmitHandler<FilterDay10Input> = (data) => {
+  const onSubmit: SubmitHandler<FilterDay13Input> = (data) => {
     filterByStatus(data.status);
     filterByAssignee(data.assigneeId);
     filterBySearchName(data.searchName);
@@ -200,18 +202,24 @@ const ListDay10 = () => {
                     {new Date(task.due_date).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                    <button
-                      className="text-blue-600 hover:text-blue-900 bg-blue-100 px-3 py-1 rounded-md transition-colors"
-                      onClick={() => setSelectedTask(task)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="text-red-600 hover:text-red-900 bg-red-100 px-3 py-1 rounded-md transition-colors"
-                      onClick={() => handleDeleteTask(task.id)}
-                    >
-                      Delete
-                    </button>
+                    {user?.roles.filter(
+                      (role) => role.name === "Administrators"
+                    ) && (
+                      <>
+                        <button
+                          className="text-blue-600 hover:text-blue-900 bg-blue-100 px-3 py-1 rounded-md transition-colors"
+                          onClick={() => setSelectedTask(task)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="text-red-600 hover:text-red-900 bg-red-100 px-3 py-1 rounded-md transition-colors"
+                          onClick={() => handleDeleteTask(task.id)}
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -219,7 +227,7 @@ const ListDay10 = () => {
         </table>
       </div>
       {selectedTask && (
-        <UpdateDay10
+        <UpdateDay13
           task={selectedTask}
           onClose={() => setSelectedTask(null)}
         />
@@ -228,4 +236,4 @@ const ListDay10 = () => {
   );
 };
 
-export default ListDay10;
+export default ListDay13;

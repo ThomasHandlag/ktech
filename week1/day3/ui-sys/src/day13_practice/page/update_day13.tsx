@@ -1,24 +1,32 @@
 import * as yup from "yup";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { inputClass, type CreateDay10Input } from "./create_day10";
-import { updateTask } from "../api";
-import { useAuth, type TaskDay10 } from "../const_day10";
+import { inputClass, type CreateDay10Input } from "./create_day13";
+import { type TaskDay13 } from "../const_day13";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Modal from "../../widgets/common/modal";
+import { useAuthStore } from "../api/useAuthStore";
+import axios from "axios";
+import { BASE_URL } from "../api/api-client";
 
-const UpdateDay10 = ({
+const UpdateDay13 = ({
   task,
   onClose,
 }: {
-  task: TaskDay10;
+  task: TaskDay13;
   onClose: () => void;
 }) => {
-  const { user } = useAuth();
+  const { access_token } = useAuthStore();
   // const navigate = useNavigate();
 
   const schema = yup.object().shape({
-    title: yup.string().max(100, "Maximum 100 characters").required("Title is required"),
-    description: yup.string().max(500, "Maximum 500 characters").required("Description is required"),
+    title: yup
+      .string()
+      .max(100, "Maximum 100 characters")
+      .required("Title is required"),
+    description: yup
+      .string()
+      .max(500, "Maximum 500 characters")
+      .required("Description is required"),
     priority: yup
       .string()
       .oneOf(["high", "medium", "low"])
@@ -47,22 +55,41 @@ const UpdateDay10 = ({
       assignee_id: task.assignee_id,
       start_date: new Date(task.start_date),
       due_date: new Date(task.due_date),
-      priority: task.priority,
       status: task.status,
+      priority: task.priority,
     },
   });
 
   const onSubmit: SubmitHandler<CreateDay10Input> = async (
     data: CreateDay10Input
   ) => {
-    const response = await updateTask(task.id, data, user!.accessToken);
     try {
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to update task");
-      }
-      // navigate(".");
-      onClose();
+      await axios
+        .request({
+          method: "PATCH",
+          url: `${BASE_URL}/workspaces/tasks/${task.id}`,
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            "Content-Type": "application/json",
+          },
+          data: {
+            title: data.title,
+            description: data.description,
+            assignee_id: data.assignee_id,
+            start_date: data.start_date.toISOString(),
+            due_date: data.due_date.toISOString(),
+            status: data.status,
+            priority: data.priority,
+          },
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            console.log("Task updated successfully");
+            onClose();
+          } else {
+            console.error(response);
+          }
+        });
     } catch (error) {
       console.error("Error updating task:", (error as Error).message);
     }
@@ -195,4 +222,4 @@ const UpdateDay10 = ({
   );
 };
 
-export default UpdateDay10;
+export default UpdateDay13;

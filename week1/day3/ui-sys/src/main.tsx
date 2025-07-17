@@ -37,13 +37,13 @@ import HomeworkDay9 from "./day9/homework/homework_day9.tsx";
 import Day10Practice from "./day10_practice/day10_practice.tsx";
 import LoginDay10 from "./day10_practice/login_day10.tsx";
 import WorkspacePage from "./day10_practice/workspace_page.tsx";
-import {
-  getLocalUser,
-  login,
-  setLocalUser,
-} from "./day10_practice/api/index.tsx";
 import ListDay10 from "./day10_practice/page/list_day10.tsx";
 import CreateTaskDay10 from "./day10_practice/page/create_day10.tsx";
+import Day13Practice from "./day13_practice/day13_practice.tsx";
+import LoginDay13 from "./day13_practice/login_day13.tsx";
+import WorkspacePage13 from "./day13_practice/workspace_page.tsx";
+import ListDay13 from "./day13_practice/page/list_day13.tsx";
+import CreateTaskDay13 from "./day13_practice/page/create_day13.tsx";
 
 export const navData: string[] = [
   "day3-btns",
@@ -64,6 +64,7 @@ export const navData: string[] = [
   "day9practice3",
   "day9homework",
   "day10practice",
+  "day13practice",
 ];
 
 export const day7homeworkRoutes: RouteObject[] = [
@@ -198,8 +199,9 @@ export const routes = createBrowserRouter([
         path: "/day7homework",
         element: <Day7Homework />,
         children: [
-          {index: true, element: <Navigate to="patient" />},
-          ...day7homeworkRoutes],
+          { index: true, element: <Navigate to="patient" /> },
+          ...day7homeworkRoutes,
+        ],
       },
       {
         path: "/day9practice1",
@@ -238,21 +240,6 @@ export const routes = createBrowserRouter([
       {
         path: "/day10practice",
         element: <Day10Practice />,
-        loader: async () => {
-          const localUser = getLocalUser();
-          if (localUser) {
-            const response = await login(localUser.email, localUser.password);
-            if (response.ok) {
-              const userData = await response.json();
-              setLocalUser({
-                ...userData.loggedInUser,
-                accessToken: userData.access_token,
-              });
-              return userData;
-            }
-          }
-          return null;
-        },
         children: [
           {
             path: "login",
@@ -273,6 +260,34 @@ export const routes = createBrowserRouter([
               {
                 path: "create",
                 element: <CreateTaskDay10 />,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "/day13practice",
+        element: <Day13Practice />,
+        children: [
+          {
+            path: "login",
+            element: <LoginDay13 />,
+          },
+          {
+            path: "workspace",
+            element: <WorkspacePage13 />,
+            children: [
+              {
+                index: true,
+                element: <Navigate to="list" />,
+              },
+              {
+                path: "list",
+                element: <ListDay13 />,
+              },
+              {
+                path: "create",
+                element: <CreateTaskDay13 />,
               },
             ],
           },

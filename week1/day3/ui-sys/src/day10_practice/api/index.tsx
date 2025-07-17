@@ -6,8 +6,8 @@ interface TaskDay10 {
   title: string;
   assignee_id: number;
   status: string;
-  start_date: string;
-  due_date: string;
+  start_date: Date;
+  due_date: Date;
 }
 
 const tokenName: string = "userToken";
