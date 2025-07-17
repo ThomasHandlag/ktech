@@ -1,6 +1,7 @@
 import SignInForm from "@/components/custom/signin_form";
 import { PiTelevision } from "react-icons/pi";
 import { getCsrfToken } from "next-auth/react";
+import { Suspense } from "react";
 const Page = async () => {
   const csrfToken = await getCsrfToken();
 
@@ -19,7 +20,9 @@ const Page = async () => {
           team
         </span>
       </div>
-      <SignInForm csrfToken={csrfToken} />
+      <Suspense>
+        <SignInForm csrfToken={csrfToken} />
+      </Suspense>
     </div>
   );
 };
