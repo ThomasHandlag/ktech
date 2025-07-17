@@ -105,6 +105,8 @@ export const authOptions: NextAuthOptions = {
 
 declare module "next-auth" {
   interface User extends UserType {
+    accessToken: string;
+    refreshToken: string;
   }
 }
 
@@ -117,5 +119,8 @@ declare module "next-auth" {
 }
 
 declare module "next-auth/jwt" {
-  interface JWT extends UserType {}
+  interface JWT extends UserType {
+    accessToken: string;
+    refreshToken: string;
+  }
 }
