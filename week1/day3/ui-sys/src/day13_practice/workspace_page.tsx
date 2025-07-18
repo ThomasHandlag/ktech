@@ -1,5 +1,6 @@
 import { NavLink, Outlet } from "react-router";
 import { useAuthStore } from "./api/useAuthStore";
+import AccessButton from "./page/access_button";
 
 const WorkspacePage13 = () => {
   const { loggedInUser: user, logOut } = useAuthStore();
@@ -21,7 +22,11 @@ const WorkspacePage13 = () => {
           >
             List Tasks
           </NavLink>
-          {user?.roles.filter((role) => role.name === "Administrators") && (
+
+          <AccessButton
+            roles={user?.roles.map((role) => role.name)}
+            onClick={() => {}}
+          >
             <NavLink
               to="create"
               className={({ isActive }) =>
@@ -31,7 +36,7 @@ const WorkspacePage13 = () => {
             >
               Create Task
             </NavLink>
-          )}
+          </AccessButton>
         </div>
         <button
           className="bg-red-500 text-white px-4 py-2 rounded-md shadow-md mt-4 hover:bg-red-600 transition-colors"

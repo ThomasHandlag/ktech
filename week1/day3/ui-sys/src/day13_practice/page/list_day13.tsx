@@ -4,6 +4,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import UpdateDay13 from "./update_day13";
 import { useAuthStore } from "../api/useAuthStore";
 import apiClient from "../api/api-client";
+import AccessButton from "./access_button";
 
 interface Day13ListQuery {
   status?: string;
@@ -34,7 +35,7 @@ const ListDay13 = () => {
     const fetchTasks = async () => {
       if (access_token) {
         try {
-          const dat = await apiClient.get("/workspaces/tasks") as TaskDay13[];
+          const dat = (await apiClient.get("/workspaces/tasks")) as TaskDay13[];
           // const response = await axios.get(`${BASE_URL}/workspaces/tasks`, {
           //   headers: {
           //     Authorization: `Bearer ${access_token}`,
@@ -193,24 +194,20 @@ const ListDay13 = () => {
                     {new Date(task.due_date).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                    {user?.roles.filter(
-                      (role) => role.name === "Administrators"
-                    ) && (
-                      <>
-                        <button
-                          className="text-blue-600 hover:text-blue-900 bg-blue-100 px-3 py-1 rounded-md transition-colors"
-                          onClick={() => setSelectedTask(task)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="text-red-600 hover:text-red-900 bg-red-100 px-3 py-1 rounded-md transition-colors"
-                          onClick={() => handleDeleteTask(task.id)}
-                        >
-                          Delete
-                        </button>
-                      </>
-                    )}
+                    <AccessButton
+                      roles={user?.roles.map((role) => role.name)}
+                      className="text-blue-600 hover:text-blue-900 bg-blue-100 px-3 py-1 rounded-md transition-colors"
+                      onClick={() => setSelectedTask(task)}
+                    >
+                      Edit
+                    </AccessButton>
+                    <AccessButton
+                      roles={user?.roles.map((role) => role.name)}
+                      className="text-red-600 hover:text-red-900 bg-red-100 px-3 py-1 rounded-md transition-colors"
+                      onClick={() => handleDeleteTask(task.id)}
+                    >
+                      Delete
+                    </AccessButton>
                   </td>
                 </tr>
               ))}

@@ -66,7 +66,7 @@ export const useAuthStore = create<AuthState>()(
                 false,
                 { type: '@AUTH/LOGIN/SUCCESS' }
               );
-              navigate('/day10practice/workspace');
+              navigate('/day10practice');
             } catch (error) {
               set({ error, access_token: undefined, refresh_token: undefined, loggedInUser: undefined }, false, {
                 type: '@AUTH/LOGIN/ERROR',
