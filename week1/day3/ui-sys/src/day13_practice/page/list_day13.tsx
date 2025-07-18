@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { type TaskDay13 } from "../const_day13";
-import { deleteTask } from "../api";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import UpdateDay13 from "./update_day13";
 import { useAuthStore } from "../api/useAuthStore";
@@ -75,15 +74,7 @@ const ListDay13 = () => {
   const handleDeleteTask = async (taskId: number) => {
     if (access_token) {
       try {
-        await deleteTask(taskId, access_token, (error) => {
-          if (!error) {
-            setListTasks((prevTasks) =>
-              prevTasks.filter((task) => task.id !== taskId)
-            );
-          } else {
-            console.error("Error deleting task:", error);
-          }
-        });
+        await apiClient.delete(`/workspaces/tasks/${taskId}`);
       } catch (error) {
         console.error("Error deleting task:", (error as Error).message);
       }

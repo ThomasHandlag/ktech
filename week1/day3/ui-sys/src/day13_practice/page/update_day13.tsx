@@ -4,9 +4,7 @@ import { inputClass, type CreateDay10Input } from "./create_day13";
 import { type TaskDay13 } from "../const_day13";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Modal from "../../widgets/common/modal";
-import { useAuthStore } from "../api/useAuthStore";
-import axios from "axios";
-import { BASE_URL } from "../api/api-client";
+import apiClient from "../api/api-client";
 
 const UpdateDay13 = ({
   task,
@@ -15,9 +13,7 @@ const UpdateDay13 = ({
   task: TaskDay13;
   onClose: () => void;
 }) => {
-  const { access_token } = useAuthStore();
   // const navigate = useNavigate();
-
   const schema = yup.object().shape({
     title: yup
       .string()
@@ -64,32 +60,17 @@ const UpdateDay13 = ({
     data: CreateDay10Input
   ) => {
     try {
-      await axios
-        .request({
-          method: "PATCH",
-          url: `${BASE_URL}/workspaces/tasks/${task.id}`,
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-            "Content-Type": "application/json",
-          },
-          data: {
-            title: data.title,
-            description: data.description,
-            assignee_id: data.assignee_id,
-            start_date: data.start_date.toISOString(),
-            due_date: data.due_date.toISOString(),
-            status: data.status,
-            priority: data.priority,
-          },
-        })
-        .then((response) => {
-          if (response.status === 200) {
-            console.log("Task updated successfully");
-            onClose();
-          } else {
-            console.error(response);
-          }
-        });
+      await apiClient.patch(`/workspaces/tasks/${task.id}`, {
+        title: data.title,
+        description: data.description,
+        assignee_id: data.assignee_id,
+        start_date: data.start_date.toISOString(),
+        due_date: data.due_date.toISOString(),
+        status: data.status,
+        priority: data.priority,
+      });
+
+      onClose();
     } catch (error) {
       console.error("Error updating task:", (error as Error).message);
     }
