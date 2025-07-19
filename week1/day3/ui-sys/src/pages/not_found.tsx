@@ -3,10 +3,11 @@
 const NotFound = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
+      <p className="text-lg">404 not found</p>
       <h1 className="text-4xl font-bold mb-4">
-        <img src="https://i.pinimg.com/originals/fe/df/71/fedf7125acf620e856b6d09ef44eee51.gif" />
+        <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzlyaTNzbG5uYjdpOWM0ZG1wYmgzdXAxNHpxNmlxdXlpZ21oOWRxOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AAsj7jdrHjtp6/giphy.gif" />
       </h1>
-      <p className="text-lg">The page you are looking for does not exist.</p>
+      <p className="text-3xl font-bold">Mom there's a guy get into my room.</p>
     </div>
   );
 };

@@ -5,7 +5,7 @@ interface AcessButtonProps {
   className?: string;
 }
 
-const allowedRoles: string[] = ["Administrators"];
+const allowedRoles: string[] = ["Administrators", "Managers"];
 
 const AccessButton = ({
   roles,

@@ -1,22 +1,18 @@
 import { Outlet, useNavigate } from "react-router";
-import { useEffect } from "react";
 import { useAuthStore } from "./api/useAuthStore";
-
+import { useEffect } from "react";
 const Day13Practice = () => {
+  const { loggedInUser: user } = useAuthStore();
   const navigate = useNavigate();
 
-  const {
-    loggedInUser,
-  } = useAuthStore((state) => state);
-
   useEffect(() => {
-    if (!loggedInUser) {
+    if (!user) {
       navigate("login");
     } else {
       navigate("workspace");
     }
-  }, [loggedInUser, navigate]);
-
+  }, [user, navigate]);
+  
   return (
     <div className="h-full">
       <Outlet />

@@ -2,6 +2,8 @@ import { useState } from "react";
 import "./App.css";
 import { navData } from "./main";
 import { NavLink, Outlet } from "react-router";
+import { MNoficationContext } from "./day13_practice/const_day13";
+import useNotification from "antd/es/notification/useNotification";
 
 const App = () => {
   const [isTop, setIsTop] = useState<boolean>(true);
@@ -13,6 +15,8 @@ const App = () => {
       setIsTop(true);
     }
   };
+
+  const [api, contextHolder ] = useNotification();
 
   return (
     <>
@@ -45,7 +49,10 @@ const App = () => {
           ))}
         </nav>
         <div className="w-full overflow-y-auto overflow-x-hidden">
-          <Outlet />
+          <MNoficationContext.Provider value={{ api }}>
+            <Outlet />
+            {contextHolder}
+          </MNoficationContext.Provider>
         </div>
       </div>
     </>

@@ -1,12 +1,7 @@
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
-import {
-  createBrowserRouter,
-  Navigate,
-  RouterProvider,
-  type RouteObject,
-} from "react-router";
+import { createBrowserRouter, Navigate, RouterProvider, type RouteObject } from "react-router";
 import ButtonPages from "./day4/button_page.tsx";
 import SeachFieldPage from "./day4/seach_field_page.tsx";
 import CardPage from "./day4/card_page.tsx";
@@ -41,9 +36,13 @@ import ListDay10 from "./day10_practice/page/list_day10.tsx";
 import CreateTaskDay10 from "./day10_practice/page/create_day10.tsx";
 import Day13Practice from "./day13_practice/day13_practice.tsx";
 import LoginDay13 from "./day13_practice/login_day13.tsx";
-import WorkspacePage13 from "./day13_practice/workspace_page.tsx";
-import ListDay13 from "./day13_practice/page/list_day13.tsx";
+import ListUserDay13 from "./day13_practice/page/list_userday13.tsx";
+import Roles from "./day13_practice/page/roles.tsx";
 import CreateTaskDay13 from "./day13_practice/page/create_day13.tsx";
+import ListDay13 from "./day13_practice/page/list_day13.tsx";
+import WorkspacePage13 from "./day13_practice/workspace_page.tsx";
+// Patch for React 19 compatibility
+import '@ant-design/v5-patch-for-react-19';
 
 export const navData: string[] = [
   "day3-btns",
@@ -288,6 +287,14 @@ export const routes = createBrowserRouter([
               {
                 path: "create",
                 element: <CreateTaskDay13 />,
+              },
+              {
+                path: "roles",
+                element: <Roles />,
+              },
+              {
+                path: "users",
+                element: <ListUserDay13 />,
               },
             ],
           },

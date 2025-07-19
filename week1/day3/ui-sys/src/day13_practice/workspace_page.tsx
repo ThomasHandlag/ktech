@@ -1,6 +1,5 @@
 import { NavLink, Outlet } from "react-router";
 import { useAuthStore } from "./api/useAuthStore";
-import AccessButton from "./page/access_button";
 
 const WorkspacePage13 = () => {
   const { loggedInUser: user, logOut } = useAuthStore();
@@ -10,7 +9,7 @@ const WorkspacePage13 = () => {
         <div className="flex flex-col gap-2 mt-4">
           <div className="bg-white p-4 rounded-md shadow-md mb-4">
             <h2 className="font-bold">User Info</h2>
-            <p>Email: {user?.email}</p>
+            <p>Email: {user?.fullName}</p>
             <p>Role: {user?.roles.map((role) => role.name).join(", ")}</p>
           </div>
           <NavLink
@@ -23,20 +22,40 @@ const WorkspacePage13 = () => {
             List Tasks
           </NavLink>
 
-          <AccessButton
-            roles={user?.roles.map((role) => role.name)}
-            onClick={() => {}}
+          <NavLink
+            to="create"
+            className={({ isActive }) =>
+              [isActive ? "bg-white text-blue-500" : "text-white"] +
+              " px-4 py-2 rounded-md shadow-md capitalize text-nowrap"
+            }
           >
-            <NavLink
-              to="create"
-              className={({ isActive }) =>
-                [isActive ? "bg-white text-blue-500" : "text-white"] +
-                " px-4 py-2 rounded-md shadow-md capitalize text-nowrap"
-              }
-            >
-              Create Task
-            </NavLink>
-          </AccessButton>
+            Create Task
+          </NavLink>
+
+          {user?.roles.filter((role) => {
+            return ["Administrators", "Managers"].includes(role.name);
+          }).length ? (
+            <>
+              <NavLink
+                to="users"
+                className={({ isActive }) =>
+                  [isActive ? "bg-white text-blue-500" : "text-white"] +
+                  " px-4 py-2 rounded-md shadow-md capitalize text-nowrap"
+                }
+              >
+                Users
+              </NavLink>
+              <NavLink
+                to="roles"
+                className={({ isActive }) =>
+                  [isActive ? "bg-white text-blue-500" : "text-white"] +
+                  " px-4 py-2 rounded-md shadow-md capitalize text-nowrap"
+                }
+              >
+                Roles
+              </NavLink>
+            </>
+          ) : null}
         </div>
         <button
           className="bg-red-500 text-white px-4 py-2 rounded-md shadow-md mt-4 hover:bg-red-600 transition-colors"

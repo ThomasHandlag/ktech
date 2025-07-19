@@ -36,12 +36,7 @@ const ListDay13 = () => {
       if (access_token) {
         try {
           const dat = (await apiClient.get("/workspaces/tasks")) as TaskDay13[];
-          // const response = await axios.get(`${BASE_URL}/workspaces/tasks`, {
-          //   headers: {
-          //     Authorization: `Bearer ${access_token}`,
-          //   },
-          // });
-          setListTasks(dat);
+          setListTasks(dat.slice(0, 50));
         } catch (error) {
           console.error("Error fetching tasks:", (error as Error).message);
         }
@@ -154,6 +149,7 @@ const ListDay13 = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {listTasks
+              .slice(0, 50)
               .filter(
                 (task) =>
                   (!query.status || task.status === query.status) &&

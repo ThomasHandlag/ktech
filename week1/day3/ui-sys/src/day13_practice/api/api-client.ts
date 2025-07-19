@@ -39,17 +39,27 @@ apiClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // Check if this is a login request - if so, don't redirect automatically
     if (originalRequest.url === '/auth/login') {
       return Promise.reject(error);
     }
 
-    // Check if it's an auth error (401 or 403) and redirect to login
     if (error.response?.status === 401 || error.response?.status === 403) {
       console.error('Authentication failed, redirecting to login');
       localStorage.removeItem('auth-storage');
-      window.location.href = '/login';
+      window.location.href = '/day13practice/login';
       return Promise.reject(error);
+    }
+
+    if (error.response?.status === 400) {
+      return Promise.reject("Request violates rules. Please check your rules.");
+    }
+
+    if (error.response?.status === 503) {
+      return Promise.reject('Service Unavailable. Please try again later.');
+    }
+
+    if (error.response?.status === 500) {
+      return Promise.reject('Internal Server Error. Please try again later.');
     }
 
     // For all other errors, just reject

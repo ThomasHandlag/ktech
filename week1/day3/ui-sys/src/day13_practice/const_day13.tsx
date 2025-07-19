@@ -1,5 +1,6 @@
-import React from "react";
+import React, { createContext, useContext } from "react";
 import { AuthContext } from "./context_day13";
+import type { NotificationInstance } from "antd/es/notification/interface";
 
 export const useAuth = () => {
   const context = React.useContext(AuthContext);
@@ -28,3 +29,18 @@ export interface TaskDay13 {
   parent_id: number | null;
   project_id: number | null;
 }
+
+
+interface GNotification {
+  api: NotificationInstance;
+}
+
+export const MNoficationContext = createContext<GNotification | null>(null);
+
+export const useGNotification = (): GNotification => {
+  const context = useContext(MNoficationContext);
+  if (!context) {
+    throw new Error("useGNotification must be used within a MNoficationProvider");
+  }
+  return context;
+};

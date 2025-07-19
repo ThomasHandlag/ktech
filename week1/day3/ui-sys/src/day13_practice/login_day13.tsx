@@ -5,6 +5,11 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuthStore } from "./api/useAuthStore";
 import { useNavigate } from "react-router";
+import { useGNotification } from "./const_day13";
+import { useState } from "react";
+import { VscLoading } from "react-icons/vsc";
+import { Button } from "antd";
+import { FiLogIn } from "react-icons/fi";
 
 interface LoginDay13Input {
   email: string;
@@ -21,7 +26,6 @@ const LoginDay13 = () => {
 
   const { login } = useAuthStore();
 
-
   const {
     handleSubmit,
     register,
@@ -31,13 +35,27 @@ const LoginDay13 = () => {
   });
 
   const navigate = useNavigate();
+  const { api } = useGNotification();
+
+  const [loading, setLoading] = useState(false);
 
   const onSubmit: SubmitHandler<LoginDay13Input> = async (data) => {
-    await login({
-      username: data.email,
-      password: data.password,
-      navigate,
-    });
+    try {
+      setLoading(true);
+      await login({
+        username: data.email,
+        password: data.password,
+        navigate,
+      });
+    } catch (error) {
+      api.error({
+        message: "Login Failed",
+        description: `Error: ${(error as Error).message}`,
+        placement: "bottomRight",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -111,12 +129,18 @@ const LoginDay13 = () => {
               </span>
             )}
           </div>
-          <div className="grid grid-cols-4 gap-5">
-            <input
-              type="submit"
-              value="Login"
-              className="bg-blue-500 col-span-1 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer transition-colors duration-200"
-            />
+          <div className="grid grid-cols-6">
+            <Button
+            htmlType="submit"
+            disabled={loading}
+            loading={loading}
+            type="primary"
+            icon={
+              loading ? <VscLoading className="animate-spin" /> : <FiLogIn/>
+            }
+          >
+             Login
+          </Button>
           </div>
         </form>
       </div>

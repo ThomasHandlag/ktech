@@ -15,3 +15,7 @@ export interface UserDay10 {
 const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
 
 export { AuthContext };
+
+
+
+
