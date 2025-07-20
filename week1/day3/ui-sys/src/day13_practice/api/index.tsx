@@ -31,7 +31,7 @@ export const getUsers = async (): Promise<LoggedInUser | string> => {
 };
 
 export const deleteUser = async (
-  userId: string
+  userId: number
 ): Promise<string | undefined> => {
   return apiClient.delete(`/security/users/${userId}`);
 };
@@ -40,7 +40,7 @@ export const updateUser = async (
   userId: string,
   userData: Partial<LoggedInUser>
 ): Promise<string | undefined> => {
-  return apiClient.patch(`/security/users/${userId}`, userData);
+  return apiClient.patch(`/security/users/${userId}`, { fullName: userData.fullName, username: userData.email });
 };
 
 export const createUser = async (
@@ -50,9 +50,23 @@ export const createUser = async (
 };
 
 export const getUsersByRole = async (
-  roleId: string
+  roleId: number
 ): Promise<LoggedInUser[] | string> => {
-  return await apiClient.get(`/security/users/role/${roleId}`);
+  return await apiClient.get(`/security/roles/${roleId}/users`);
+};
+
+export const addRoleToUser = async (
+  userId: string,
+  roleId: number
+): Promise<string | undefined> => {
+  return apiClient.put(`/security/users/${userId}/add-role-to-user`, { role_id: roleId });
+};
+
+export const removeRoleFromUser = async (
+  userId: string,
+  roleId: number
+): Promise<string | undefined> => {
+  return apiClient.put(`/security/users/${userId}/remove-role-from-user`, { role_id: roleId });
 };
 
 // <------------------ workspace/tasks api ---------------------->

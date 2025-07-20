@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import {
   Table,
   Button,
@@ -11,6 +11,9 @@ import {
   Card,
   Select,
   Switch,
+  type TableColumnsType,
+  type InputRef,
+  type TableColumnType,
 } from "antd";
 import {
   PlusOutlined,
@@ -18,11 +21,20 @@ import {
   DeleteOutlined,
   UserOutlined,
   TeamOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
-import type { ColumnsType } from "antd/es/table";
 import type { LoggedInUser, Role, UserOnCreate } from "../models/models";
-import { getUsers, createUser, updateUser, deleteUser, getRoles } from "../api";
+import {
+  createUser,
+  updateUser,
+  deleteUser,
+  getRoles,
+  getUsersByRole,
+  addRoleToUser,
+  removeRoleFromUser,
+} from "../api";
 import { useGNotification } from "../const_day13";
+import type { FilterDropdownProps } from "antd/es/table/interface";
 
 interface UserFormData {
   username?: string;
@@ -38,6 +50,8 @@ interface UserRoleUpdateData {
   roleIds: number[];
 }
 
+type DataIndex = keyof LoggedInUser;
+
 const ListUserDay13 = () => {
   const [users, setUsers] = useState<LoggedInUser[]>([]);
   const [roles, setRoles] = useState<Role[]>([]);
@@ -46,36 +60,103 @@ const ListUserDay13 = () => {
   const [isRoleModalOpen, setIsRoleModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<LoggedInUser | null>(null);
   const [selectedUser, setSelectedUser] = useState<LoggedInUser | null>(null);
+  const [selectedRoleId, setSelectedRoleId] = useState<number>(1);
+
   const [userForm] = Form.useForm();
   const [roleForm] = Form.useForm();
 
   const { api } = useGNotification();
 
-  const fetchUsers = useCallback(async () => {
-    setLoading(true);
-    try {
-      const response = await getUsers();
-      if (Array.isArray(response)) {
-        setUsers(response);
-      } else {
-        api.error({
-          message: "Error fetching users",
-          description: "Failed to load users data",
-          placement: "bottomRight",
-        });
-      }
-    } catch (error) {
-      api.error({
-        message: "Error fetching users",
-        description: JSON.stringify(error),
-        placement: "bottomRight",
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, [api]);
+  const searchInput = useRef<InputRef>(null);
+
+  const handleSearch = (confirm: FilterDropdownProps["confirm"]) => {
+    confirm();
+  };
+
+  const handleReset = (clearFilters: () => void) => {
+    clearFilters();
+  };
+
+  const getColumnSearchProps = (
+    dataIndex: DataIndex
+  ): TableColumnType<LoggedInUser> => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+      close,
+    }) => (
+      <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(confirm)}
+          style={{ marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() =>
+              handleSearch(confirm)
+            }
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({ closeDropdown: false });
+            }}
+          >
+            Filter
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            close
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered: boolean) => (
+      <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        ?.toString()
+        .toLowerCase()
+        .includes((value as string).toLowerCase()),
+    filterDropdownProps: {
+      onOpenChange(open) {
+        if (open) {
+          setTimeout(() => searchInput.current?.select(), 100);
+        }
+      },
+    },
+  });
 
   const fetchRoles = useCallback(async () => {
+    setLoading(true);
     try {
       const response = await getRoles();
       if (Array.isArray(response)) {
@@ -87,13 +168,39 @@ const ListUserDay13 = () => {
         description: `${(error as Error).message}`,
         placement: "bottomRight",
       });
+    } finally {
+      setLoading(false);
     }
   }, [api]);
 
+  const fetchUsersByRole = useCallback(
+    async (roleId: number) => {
+      setLoading(true);
+      try {
+        const response = await getUsersByRole(roleId);
+        if (Array.isArray(response)) {
+          setUsers(response);
+        }
+      } catch (error) {
+        api.error({
+          message: "Error fetching users by role",
+          description: `${(error as Error).message}`,
+          placement: "bottomRight",
+        });
+      } finally {
+        setLoading(false);
+      }
+    },
+    [api]
+  );
+
   useEffect(() => {
-    fetchUsers();
+    fetchUsersByRole(selectedRoleId);
+  }, [fetchUsersByRole, selectedRoleId]);
+
+  useEffect(() => {
     fetchRoles();
-  }, [fetchUsers, fetchRoles]);
+  }, [fetchRoles]);
 
   const handleCreateUser = () => {
     setEditingUser(null);
@@ -123,13 +230,12 @@ const ListUserDay13 = () => {
 
   const handleDeleteUser = async (userId: string | number) => {
     try {
-      await deleteUser(userId.toString());
+      await deleteUser(userId as number);
       api.success({
         message: "Success",
         description: "User deleted successfully",
         placement: "bottomRight",
       });
-      fetchUsers();
     } catch (error) {
       api.error({
         message: "Error deleting user",
@@ -139,60 +245,65 @@ const ListUserDay13 = () => {
     }
   };
 
-  const handleUserSubmit = async (values: UserFormData) => {
-    try {
-      if (editingUser) {
-        const updateData = {
-          fullName: values.fullName,
-          email: values.email,
-          isActive: values.isActive,
-        };
-        await updateUser(editingUser.id.toString(), updateData);
-        api.success({
-          message: "Success",
-          description: "User updated successfully",
-          placement: "bottomRight",
-        });
-      } else {
-        const createData: UserOnCreate = {
-          username: values.username || values.email || "",
-          fullName: values.fullName,
-          password: values.password || "",
-          confirmPassword: values.confirmPassword || "",
-        };
-        await createUser(createData);
-        api.success({
-          message: "Success",
-          description: "User created successfully",
+  const handleUserSubmit = useCallback(
+    async (values: UserFormData) => {
+      try {
+        if (editingUser) {
+          const updateData = {
+            fullName: values.fullName,
+            email: values.username,
+            isActive: values.isActive,
+          };
+          await updateUser(editingUser.id.toString(), updateData);
+          if (!values.roleIds.includes(selectedRoleId)) {
+            await removeRoleFromUser(editingUser.id.toString(), selectedRoleId);
+            await fetchUsersByRole(selectedRoleId);
+          }
+          api.success({
+            message: "Success",
+            description: "User updated successfully",
+            placement: "bottomRight",
+          });
+        } else {
+          const createData: UserOnCreate = {
+            username: values.username || values.email || "",
+            fullName: values.fullName,
+            password: values.password || "",
+            confirmPassword: values.confirmPassword || "",
+          };
+          await createUser(createData);
+          api.success({
+            message: "Success",
+            description: "User created successfully",
+            placement: "bottomRight",
+          });
+        }
+        setIsUserModalOpen(false);
+      } catch (error) {
+        api.error({
+          message: "Error saving user",
+          description: `${(error as Error).message}`,
           placement: "bottomRight",
         });
       }
-      setIsUserModalOpen(false);
-      fetchUsers();
-    } catch (error) {
-      api.error({
-        message: "Error saving user",
-        description: `${(error as Error).message}`,
-        placement: "bottomRight",
-      });
-    }
-  };
+    },
+    [editingUser, selectedRoleId, api, fetchUsersByRole]
+  );
 
   const handleRoleSubmit = async (values: UserRoleUpdateData) => {
     if (!selectedUser) return;
 
     try {
-      const updateData = {
-        roleIds: values.roleIds,
-      } as Partial<LoggedInUser>;
-      await updateUser(selectedUser.id.toString(), updateData);
+      const roleIds = values.roleIds.map((id) => Number(id));
+      for (const roleId of roleIds) {
+        await addRoleToUser(selectedUser.id.toString(), roleId);
+      }
       api.success({
         message: "Success",
         description: "User roles updated successfully",
         placement: "bottomRight",
       });
       setIsRoleModalOpen(false);
-      fetchUsers();
     } catch (error) {
       api.error({
         message: "Error updating roles",
@@ -202,7 +313,7 @@ const ListUserDay13 = () => {
     }
   };
 
-  const columns: ColumnsType<LoggedInUser> = [
+  const columns: TableColumnsType<LoggedInUser> = [
     {
       title: "ID",
       dataIndex: "id",
@@ -219,6 +330,8 @@ const ListUserDay13 = () => {
           <span>{text}</span>
         </div>
       ),
+      ellipsis: true,
+      ...getColumnSearchProps("fullName"),
     },
     {
       title: "Email",
@@ -227,6 +340,7 @@ const ListUserDay13 = () => {
       render: (text) => (
         <span className="text-blue-500 hover:underline">{text}</span>
       ),
+      ellipsis: true,
     },
     {
       title: "Status",
@@ -234,7 +348,10 @@ const ListUserDay13 = () => {
       key: "status",
       width: 100,
       render: (active) => (
-        <Tag color={active === "active" ? "green" : "red"} className="capitalize">
+        <Tag
+          color={active === "active" ? "green" : "red"}
+          className="capitalize"
+        >
           {active}
         </Tag>
       ),
@@ -296,24 +413,39 @@ const ListUserDay13 = () => {
   ];
 
   return (
-    <div className="p-6">
+    <div className="">
       <Card>
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold mb-2">User Management</h1>
-          <p className="text-gray-600 mb-4">
-            Manage users, their roles, and permissions
-          </p>
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={handleCreateUser}
-            size="large"
-          >
-            Create New User
-          </Button>
+        <div className="mb-6 flex flex-col">
+          <div>
+            <h1 className="text-2xl font-bold mb-2">User Management</h1>
+            <p className="text-gray-600 mb-4">
+              Manage users, their roles, and permissions
+            </p>
+          </div>
+          <div className="flex items-center">
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={handleCreateUser}
+              size="large"
+            >
+              Create New User
+            </Button>
+            <Select
+              value={selectedRoleId}
+              onChange={(value) => setSelectedRoleId(value)}
+              style={{ width: 200, marginLeft: "16px" }}
+            >
+              {roles.map((role) => (
+                <Select.Option key={role.id} value={role.id}>
+                  {role.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
         </div>
 
-        <Table
+        <Table<LoggedInUser>
           columns={columns}
           dataSource={users}
           rowKey="id"
@@ -355,7 +487,7 @@ const ListUserDay13 = () => {
             </Form.Item>
 
             <Form.Item
-              name="email"
+              name="username"
               label="Email"
               rules={[
                 { required: true, message: "Please enter email" },

@@ -1,35 +1,109 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { type TaskDay13 } from "../const_day13";
-import { useForm, type SubmitHandler } from "react-hook-form";
 import UpdateDay13 from "./update_day13";
 import { useAuthStore } from "../api/useAuthStore";
 import apiClient from "../api/api-client";
 import AccessButton from "./access_button";
+import {
+  SearchOutlined,
+} from "@ant-design/icons";
+import { Table, Space, Tag, type InputRef, type TableColumnType, Button, Input } from "antd";
+import type { ColumnsType } from "antd/es/table";
+import type { FilterDropdownProps } from "antd/es/table/interface";
 
-interface Day13ListQuery {
-  status?: string;
-  assigneeId?: number;
-  searchName?: string;
-}
-
-interface FilterDay13Input {
-  status: string;
-  assigneeId: number;
-  searchName: string;
-}
+type DataIndex = keyof TaskDay13;
 
 const ListDay13 = () => {
   const { access_token, loggedInUser: user } = useAuthStore();
 
   const [listTasks, setListTasks] = useState<TaskDay13[]>([]);
-
-  const [query, setQuery] = useState<Day13ListQuery>({});
-
   const [selectedTask, setSelectedTask] = useState<TaskDay13 | null>(null);
 
-  const cellHeaderClass =
-    "px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider";
-  const cellClass = "px-6 py-4 whitespace-nowrap text-sm text-gray-500";
+  const searchInput = useRef<InputRef>(null);
+
+  const handleSearch = (confirm: FilterDropdownProps["confirm"]) => {
+    confirm();
+  };
+
+  const handleReset = (clearFilters: () => void) => {
+    clearFilters();
+  };
+
+  const getColumnSearchProps = (
+    dataIndex: DataIndex
+  ): TableColumnType<TaskDay13> => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+      close,
+    }) => (
+      <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(confirm)}
+          style={{ marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(confirm)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({ closeDropdown: false });
+            }}
+          >
+            Filter
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            close
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered: boolean) => (
+      <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        ?.toString()
+        .toLowerCase()
+        .includes((value as string).toLowerCase()) ?? false,
+    filterDropdownProps: {
+      onOpenChange(open) {
+        if (open) {
+          setTimeout(() => searchInput.current?.select(), 100);
+        }
+      },
+    },
+  });
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -46,27 +120,6 @@ const ListDay13 = () => {
     fetchTasks();
   });
 
-  const filterByStatus = (status: string) => {
-    setQuery((prevQuery) => ({
-      ...prevQuery,
-      status,
-    }));
-  };
-
-  const filterByAssignee = (assigneeId: number) => {
-    setQuery((prevQuery) => ({
-      ...prevQuery,
-      assigneeId,
-    }));
-  };
-
-  const filterBySearchName = (name: string) => {
-    setQuery((prevQuery) => ({
-      ...prevQuery,
-      searchName: name,
-    }));
-  };
-
   const handleDeleteTask = async (taskId: number) => {
     if (access_token) {
       try {
@@ -77,139 +130,104 @@ const ListDay13 = () => {
     }
   };
 
-  const { register, handleSubmit } = useForm<FilterDay13Input>();
-
-  const onSubmit: SubmitHandler<FilterDay13Input> = (data) => {
-    filterByStatus(data.status);
-    filterByAssignee(data.assigneeId);
-    filterBySearchName(data.searchName);
-  };
+  const columns: ColumnsType<TaskDay13> = [
+    {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+      sorter: (a, b) => a.title.localeCompare(b.title),
+      ...getColumnSearchProps("title"),
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      ellipsis: true,
+    },
+    {
+      title: "Assignee ID",
+      dataIndex: "assignee_id",
+      key: "assignee_id",
+      sorter: (a, b) => a.assignee_id - b.assignee_id,
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (status: string) => {
+        const color =
+          status === "done"
+            ? "green"
+            : status === "in_progress"
+            ? "orange"
+            : "default";
+        return <Tag color={color}>{status}</Tag>;
+      },
+      filters: [
+        { text: "To Do", value: "to_do" },
+        { text: "In Progress", value: "in_progress" },
+        { text: "Done", value: "done" },
+      ],
+      onFilter: (value, record) => record.status === value,
+    },
+    {
+      title: "Start Date",
+      dataIndex: "start_date",
+      key: "start_date",
+      render: (date: string) => new Date(date).toLocaleDateString(),
+      sorter: (a, b) =>
+        new Date(a.start_date).getTime() - new Date(b.start_date).getTime(),
+    },
+    {
+      title: "Due Date",
+      dataIndex: "due_date",
+      key: "due_date",
+      render: (date: string) => new Date(date).toLocaleDateString(),
+      sorter: (a, b) =>
+        new Date(a.due_date).getTime() - new Date(b.due_date).getTime(),
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (_, record) => (
+        <Space size="small">
+          <AccessButton
+            roles={user?.roles.map((role) => role.name)}
+            className="text-blue-600 hover:text-blue-900 bg-blue-100 px-3 py-1 rounded-md transition-colors"
+            onClick={() => setSelectedTask(record)}
+          >
+            Edit
+          </AccessButton>
+          <AccessButton
+            roles={user?.roles.map((role) => role.name)}
+            className="text-red-600 hover:text-red-900 bg-red-100 px-3 py-1 rounded-md transition-colors"
+            onClick={() => handleDeleteTask(record.id)}
+          >
+            Delete
+          </AccessButton>
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <div className="mb-6 flex flex-col items-center justify-start">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-row gap-4 items-center"
-        >
-          <input
-            type="text"
-            placeholder="Search by name"
-            className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            {...register("searchName")}
-          />
-          <select {...register("assigneeId")}>
-            <option value="">All Assignees</option>
-            <option value={1}>Assignee 1</option>
-            <option value={2}>Assignee 2</option>
-            <option value={3}>Assignee 3</option>
-          </select>
-          <select
-            {...register("status")}
-            className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">All Statuses</option>
-            <option value="to_do">To Do</option>
-            <option value="in_progress">In Progress</option>
-            <option value="done">Done</option>
-          </select>
-          <button
-            type="submit"
-            className="bg-green-500 text-white px-4 py-2 rounded-lg shadow hover:bg-green-600 transition-colors"
-          >
-            Filter
-          </button>
-          <button
-            type="button"
-            onClick={() => setQuery({})}
-            className="bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600 transition-colors"
-          >
-            Clear filter
-          </button>
-        </form>
-      </div>
-      <div className="overflow-x-auto bg-white rounded-lg shadow">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th
-                className={
-                  "px-6 py-4 text-left text-xs font-medium  uppercase tracking-wider  text-black"
-                }
-              >
-                Title
-              </th>
-              <th className={cellHeaderClass}>Description</th>
-              <th className={cellHeaderClass}>Assignee ID</th>
-              <th className={cellHeaderClass}>Status</th>
-              <th className={cellHeaderClass}>Start Date</th>
-              <th className={cellHeaderClass}>Due Date</th>
-              <th className={cellHeaderClass}>Actions</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {listTasks
-              .slice(0, 50)
-              .filter(
-                (task) =>
-                  (!query.status || task.status === query.status) &&
-                  (!query.assigneeId || task.assignee_id == query.assigneeId) &&
-                  (!query.searchName ||
-                    task.title
-                      .toLowerCase()
-                      .includes(query.searchName.toLowerCase()))
-              )
-              .map((task) => (
-                <tr
-                  key={task.id}
-                  className="hover:bg-gray-50 transition-colors"
-                >
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {task.title}
-                  </td>
-                  <td className={cellClass}>{task.description}</td>
-                  <td className={cellClass}>{task.assignee_id}</td>
-                  <td className={cellClass}>
-                    <span
-                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                    ${
-                      task.status === "done"
-                        ? "bg-green-100 text-green-800"
-                        : task.status === "in_progress"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : "bg-gray-100 text-gray-800"
-                    }`}
-                    >
-                      {task.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(task.start_date).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(task.due_date).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                    <AccessButton
-                      roles={user?.roles.map((role) => role.name)}
-                      className="text-blue-600 hover:text-blue-900 bg-blue-100 px-3 py-1 rounded-md transition-colors"
-                      onClick={() => setSelectedTask(task)}
-                    >
-                      Edit
-                    </AccessButton>
-                    <AccessButton
-                      roles={user?.roles.map((role) => role.name)}
-                      className="text-red-600 hover:text-red-900 bg-red-100 px-3 py-1 rounded-md transition-colors"
-                      onClick={() => handleDeleteTask(task.id)}
-                    >
-                      Delete
-                    </AccessButton>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
+      <h1 className="text-2xl font-bold mb-6">Task List</h1>
+      <Table
+        columns={columns}
+        dataSource={listTasks}
+        rowKey="id"
+        pagination={{
+          pageSize: 10,
+          showSizeChanger: true,
+          showQuickJumper: true,
+          showTotal: (total, range) =>
+            `${range[0]}-${range[1]} of ${total} items`,
+        }}
+        scroll={{ x: "max-content" }}
+        className="bg-white rounded-lg shadow"
+      />
+
       {selectedTask && (
         <UpdateDay13
           task={selectedTask}

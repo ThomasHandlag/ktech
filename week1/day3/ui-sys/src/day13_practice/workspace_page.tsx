@@ -1,81 +1,137 @@
-import { NavLink, Outlet } from "react-router";
+import { NavLink, Outlet, useLocation } from "react-router";
+import { Layout, Menu, Avatar, Card, Button, Typography, Tag } from "antd";
+import {
+  UnorderedListOutlined,
+  PlusOutlined,
+  UserOutlined,
+  TeamOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons";
+import type { MenuProps } from "antd";
 import { useAuthStore } from "./api/useAuthStore";
+
+const { Sider, Content } = Layout;
+const { Title, Text } = Typography;
 
 const WorkspacePage13 = () => {
   const { loggedInUser: user, logOut } = useAuthStore();
+  const location = useLocation();
+
+  const isAdmin = user?.roles.some((role) =>
+    ["Administrators", "Managers"].includes(role.name)
+  );
+
+  const menuItems: MenuProps["items"] = [
+    {
+      key: "list",
+      icon: <UnorderedListOutlined />,
+      label: <NavLink to="list">Tasks</NavLink>,
+    },
+    {
+      key: "create",
+      icon: <PlusOutlined />,
+      label: <NavLink to="create">Create Task</NavLink>,
+    },
+    ...(isAdmin
+      ? [
+          {
+            type: "divider" as const,
+          },
+          {
+            key: "admin",
+            label: "Administration",
+            type: "group" as const,
+            children: [
+              {
+                key: "users",
+                icon: <UserOutlined />,
+                label: <NavLink to="users">Users</NavLink>,
+              },
+              {
+                key: "roles",
+                icon: <TeamOutlined />,
+                label: <NavLink to="roles">Roles</NavLink>,
+              },
+            ],
+          },
+        ]
+      : []),
+  ];
+
+  const getSelectedKey = () => {
+    const path = location.pathname.split("/").pop();
+    return path || "list";
+  };
+
   return (
-    <div className="grid grid-cols-10 h-full">
-      <div className="col-span-2 bg-blue-500 p-4 flex flex-col h-full z-5 justify-between">
-        <div className="flex flex-col gap-2 mt-4">
-          <div className="bg-white p-4 rounded-md shadow-md mb-4">
-            <h2 className="font-bold">User Info</h2>
-            <p>Email: {user?.fullName}</p>
-            <p>Role: {user?.roles.map((role) => role.name).join(", ")}</p>
-          </div>
-          <NavLink
-            to="list"
-            className={({ isActive }) =>
-              [isActive ? "bg-white text-blue-500" : "text-white"] +
-              " px-4 py-2 rounded-md shadow-md capitalize text-nowrap"
-            }
-          >
-            List Tasks
-          </NavLink>
-
-          <NavLink
-            to="create"
-            className={({ isActive }) =>
-              [isActive ? "bg-white text-blue-500" : "text-white"] +
-              " px-4 py-2 rounded-md shadow-md capitalize text-nowrap"
-            }
-          >
-            Create Task
-          </NavLink>
-
-          {user?.roles.filter((role) => {
-            return ["Administrators", "Managers"].includes(role.name);
-          }).length ? (
-            <>
-              <NavLink
-                to="users"
-                className={({ isActive }) =>
-                  [isActive ? "bg-white text-blue-500" : "text-white"] +
-                  " px-4 py-2 rounded-md shadow-md capitalize text-nowrap"
-                }
-              >
-                Users
-              </NavLink>
-              <NavLink
-                to="roles"
-                className={({ isActive }) =>
-                  [isActive ? "bg-white text-blue-500" : "text-white"] +
-                  " px-4 py-2 rounded-md shadow-md capitalize text-nowrap"
-                }
-              >
-                Roles
-              </NavLink>
-            </>
-          ) : null}
+    <Layout className="overflow-hidden h-full">
+      <Sider width={280} className="bg-white border-r border-gray-200">
+        <div className="p-4 bg-white">
+          <Card size="small" className="mb-4">
+            <div className="text-center">
+              <Avatar
+                size={64}
+                icon={<UserOutlined />}
+                style={{
+                  backgroundColor: "#1890ff",
+                  marginBottom: "12px",
+                }}
+              />
+              <Title level={5} style={{ margin: "0 0 4px 0" }}>
+                {user?.fullName}
+              </Title>
+              <Text type="secondary" style={{ fontSize: "12px" }}>
+                {user?.email}
+              </Text>
+              <div className="mt-2">
+                {user?.roles.map((role) => (
+                  <Tag key={role.id} color="blue" style={{ margin: "2px" }}>
+                    {role.name}
+                  </Tag>
+                ))}
+              </div>
+            </div>
+          </Card>
         </div>
-        <button
-          className="bg-red-500 text-white px-4 py-2 rounded-md shadow-md mt-4 hover:bg-red-600 transition-colors"
-          onClick={() => {
-            logOut();
+
+        <Menu
+          mode="inline"
+          selectedKeys={[getSelectedKey()]}
+          items={menuItems}
+          style={{
+            borderRight: 0,
+            height: "calc(100vh - 200px)",
+            overflow: "auto",
+          }}
+        />
+
+        <div
+          style={{
+            position: "absolute",
+            bottom: "16px",
+            left: "16px",
+            right: "16px",
           }}
         >
-          Logout
-        </button>
-      </div>
-      <div className="col-span-8 bg-white p-4 flex flex-col gap-4 overflow-y-scroll">
-        <div>
-          <h2 className="font-bold">Workspace</h2>
-          <p>This is the workspace area where you can manage your tasks.</p>
+          <Button
+            type="primary"
+            danger
+            block
+            icon={<LogoutOutlined />}
+            onClick={logOut}
+            style={{ height: "40px" }}
+          >
+            Logout
+          </Button>
         </div>
-        <div>
+      </Sider>
+
+      <Layout>
+        <Content className="overflow-y-scroll h-full">
           <Outlet />
-        </div>
-      </div>
-    </div>
+        </Content>
+      </Layout>
+    </Layout>
   );
 };
 
