@@ -1,1 +1,0 @@
-export const TaskBaseUrl = "https://server.aptech.io";
